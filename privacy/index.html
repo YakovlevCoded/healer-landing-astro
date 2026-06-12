@@ -1,0 +1,274 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Bevita — Privacy Policy</title><meta name=viewport content="width=device-width,initial-scale=1"><style>body{font:16px/1.6 -apple-system,system-ui,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;color:#1F2A24;background:#FAF6F0}h1{font-size:28px}h2{font-size:22px;margin-top:32px}h3{font-size:18px}a{color:#4F6B4A}hr{border:0;border-top:1px solid #ddd;margin:32px 0}</style></head><body><h1>Bevita — Privacy Policy</h1>
+
+<h2>Privacy Policy</h2>
+
+<p><strong>Last updated: 2026-05-24</strong></p>
+<p><strong>Effective: 2026-05-24</strong></p>
+
+<p>This Privacy Policy explains how Bevita Health AG ("Bevita", "we", "us") collects, uses, stores, and protects your personal information when you use the Bevita mobile app and related services.</p>
+
+<p>We take your privacy seriously, especially because health data is among the most sensitive categories of personal information.</p>
+
+<hr/>
+
+<h3>1. Information We Collect</h3>
+
+<p><strong>A. Information you provide directly:</strong></p>
+<ul>
+<li>Account information: email address, optional name</li>
+<li>Profile data: age, biological sex, weight, height, chronic conditions, medications, lifestyle factors</li>
+<li>Onboarding quiz responses</li>
+<li>Lab results you upload (photos, PDFs, manually entered values)</li>
+<li>Symptom logs (location, type, intensity, duration)</li>
+<li>Notes and journal entries</li>
+<li>Subscription and payment information (processed by App Store / Google Play / Stripe — we do not store payment card details)</li>
+</ul>
+
+<p><strong>B. Information collected automatically:</strong></p>
+<ul>
+<li>Device information: device type, OS version, app version, language, timezone</li>
+<li>Usage data: features used, screens viewed, session duration (anonymized via PostHog)</li>
+<li>Crash reports (via Sentry)</li>
+<li>Push notification tokens</li>
+</ul>
+
+<p><strong>C. Information we DO NOT collect:</strong></p>
+<ul>
+<li>Precise location (we use only timezone)</li>
+<li>Contacts, photos library access (only specific photos you choose to upload)</li>
+<li>Microphone, camera (except when you explicitly use the upload feature)</li>
+<li>Browsing history outside the app</li>
+<li>Social media accounts</li>
+</ul>
+
+<hr/>
+
+<h3>2. How We Use Your Information</h3>
+
+<p>We use your data to:</p>
+<ul>
+<li>Provide the core service: extract data from your lab results, generate analyses, send personalized reminders</li>
+<li>Improve the AI models (only with explicit consent — see Section 6)</li>
+<li>Communicate with you about the service (password resets, important updates)</li>
+<li>Process payments and manage subscriptions</li>
+<li>Detect and prevent abuse, fraud, and security incidents</li>
+<li>Comply with legal obligations</li>
+</ul>
+
+<p>We do <strong>NOT</strong> use your data to:</p>
+<ul>
+<li>Sell or share with advertisers</li>
+<li>Build advertising profiles</li>
+<li>Train third-party AI models without your consent</li>
+<li>Provide insurance underwriting or pricing decisions</li>
+<li>Share with employers or healthcare payers</li>
+</ul>
+
+<hr/>
+
+<h3>3. Legal Basis (GDPR)</h3>
+
+<p>Under the General Data Protection Regulation, we process your data based on:</p>
+<ul>
+<li>**Contract performance** (Article 6(1)(b)): to provide the service you subscribed to</li>
+<li>**Legitimate interest** (Article 6(1)(f)): for fraud prevention, service improvement</li>
+<li>**Consent** (Article 6(1)(a) + Article 9(2)(a) for health data): for AI processing of your lab results and analysis</li>
+<li>**Legal obligation** (Article 6(1)(c)): for tax, regulatory compliance</li>
+</ul>
+
+<p>For health-related data (Article 9 special categories), we rely on <strong>explicit consent</strong> which you provide during onboarding. You may withdraw consent at any time.</p>
+
+<hr/>
+
+<h3>4. Data Sharing & Third-Party Processors</h3>
+
+<p>We share data only with these third-party processors, each under a Data Processing Agreement (DPA):</p>
+
+<p>| Processor | Purpose | Location |</p>
+<p>|---|---|---|</p>
+<p>| Supabase (Postgres + storage) | Primary database and file storage | EU (Frankfurt) |</p>
+<p>| OpenRouter (openrouter.ai) | Routing gateway for the AI providers below | USA |</p>
+<p>| Google Gemini (via OpenRouter) | Extraction and analysis of biomarkers and lab document content | USA |</p>
+<p>| DeepSeek (via OpenRouter) | AI-generated narrative summaries and in-app chat answers | Routed through OpenRouter (USA) |</p>
+<p>| RevenueCat | Subscription management (inactive in v1.0) | USA |</p>
+<p>| Apple App Store / Google Play | Payment processing | USA |</p>
+<p>| Expo Push Notifications | Push notification delivery | USA |</p>
+<p>| PostHog | Anonymized usage analytics | EU (self-hosted) |</p>
+<p>| Sentry | Crash reporting | USA |</p>
+
+<p><strong>What is sent to AI providers</strong>: only the text and values extracted from documents you upload (biomarkers, units, ranges, dates), your age and sex, symptoms or notes you log, and messages you write in the in-app AI chat. Your name, email, account identifiers, and uploaded raw files are not sent to AI providers.</p>
+
+<p><strong>Cross-border data transfers</strong>: Some of our processors are outside the EU/EEA. For transfers to the USA, we rely on the EU-U.S. Data Privacy Framework and on your explicit consent (collected at onboarding via the AI Data Sharing consent screen), plus Standard Contractual Clauses where available.</p>
+
+<p>You may withdraw your AI consent any time from <em>Profile → Legal & Privacy</em>. Doing so disables AI features (lab extraction, narrative analysis, chat).</p>
+
+<hr/>
+
+<h3>5. Data Security</h3>
+
+<p>We implement industry-standard security:</p>
+<ul>
+<li>Transport encryption (TLS 1.3) for all data transmission</li>
+<li>Encryption at rest for biomarker values (libsodium with per-user keys)</li>
+<li>Row-level security in Postgres</li>
+<li>Signed URLs for file storage (5-minute expiry)</li>
+<li>Multi-factor authentication available for accounts</li>
+<li>Regular security audits and penetration testing (post-launch)</li>
+<li>Audit logs of all data access</li>
+</ul>
+
+<p>In case of a data breach affecting your data, we will notify you within 72 hours as required by GDPR Article 33.</p>
+
+<hr/>
+
+<h3>6. AI Processing of Your Data</h3>
+
+<p>When you upload a lab result or use the in-app chat, the relevant content is:</p>
+<p>1. Stored in our EU-based storage (Supabase, file uploads) and database (extracted values).</p>
+<p>2. Sent through <strong>OpenRouter</strong> (openrouter.ai, USA) to <strong>Google Gemini</strong> for document extraction and to <strong>DeepSeek</strong> for narrative analysis and chat answers.</p>
+<p>3. Returned as structured biomarkers and plain-language explanations.</p>
+<p>4. Stored in our database (encrypted at rest) so you can see history and trends.</p>
+
+<p>OpenRouter, Google Gemini, and DeepSeek do <strong>NOT</strong> train models on your data per their stated terms (verified at signup). Transient processing in their infrastructure is required to perform the extraction and chat.</p>
+
+<p>If you withdraw consent for AI processing, we will:</p>
+<ul>
+<li>Stop processing new uploads with AI</li>
+<li>Delete previously extracted biomarker data (you can request)</li>
+<li>Continue providing manual entry features without AI</li>
+</ul>
+
+<hr/>
+
+<h3>7. Data Retention</h3>
+
+<p>We retain your data for the following periods:</p>
+<ul>
+<li>Account and profile: while your account is active + 30 days after deletion</li>
+<li>Lab results and analyses: while your account is active + 30 days</li>
+<li>Anonymous usage analytics: 26 months (PostHog default)</li>
+<li>Crash logs: 90 days</li>
+<li>Audit logs: 2 years (legal requirement in some jurisdictions)</li>
+<li>Payment records: 7 years (tax/accounting requirement)</li>
+</ul>
+
+<p>After account deletion, we anonymize remaining data within 30 days. Aggregated, anonymized statistics may be retained indefinitely.</p>
+
+<hr/>
+
+<h3>8. Your Rights</h3>
+
+<p>Depending on your jurisdiction, you have the following rights:</p>
+
+<p><strong>Under GDPR (EU/EEA users):</strong></p>
+<ul>
+<li>Access your data (Article 15)</li>
+<li>Correct inaccurate data (Article 16)</li>
+<li>Delete your data ("right to be forgotten") (Article 17)</li>
+<li>Restrict processing (Article 18)</li>
+<li>Data portability — export your data (Article 20)</li>
+<li>Object to processing (Article 21)</li>
+<li>Withdraw consent at any time (Article 7(3))</li>
+<li>Lodge a complaint with a supervisory authority</li>
+</ul>
+
+<p><strong>Under CCPA (California, USA users):</strong></p>
+<ul>
+<li>Know what data we collect</li>
+<li>Delete your data</li>
+<li>Opt out of "sale" of data (we don't sell, but you can object)</li>
+<li>Non-discrimination for exercising rights</li>
+</ul>
+
+<p><strong>Russian users:</strong></p>
+<ul>
+<li>Rights under Federal Law No. 152-FZ on Personal Data, where applicable</li>
+</ul>
+
+<p>To exercise any right: email <strong>privacy@healer.app</strong> or use the in-app data export and deletion tools (Settings → Privacy).</p>
+
+<p>We respond within 30 days (GDPR) or 45 days (CCPA).</p>
+
+<hr/>
+
+<h3>9. Children's Privacy</h3>
+
+<p>Bevita is <strong>not intended for users under 18</strong>. We do not knowingly collect data from children under 18. If you believe a child has created an account, contact us at privacy@healer.app and we will delete the data.</p>
+
+<p>For users between 13-18 in jurisdictions where teens can consent (varies), parental consent is required.</p>
+
+<hr/>
+
+<h3>10. Sharing with Healthcare Providers</h3>
+
+<p>You can choose to share data with a healthcare provider via:</p>
+<ul>
+<li>PDF export (you control the file)</li>
+<li>Future doctor portal (Phase 3, opt-in only)</li>
+</ul>
+
+<p>We do not share your data with any healthcare provider without your explicit action.</p>
+
+<hr/>
+
+<h3>11. Account Deletion</h3>
+
+<p>To delete your account:</p>
+<p>1. Settings → Account → Delete Account</p>
+<p>2. Confirm via email link (sent to verify your identity)</p>
+<p>3. All data is queued for deletion within 30 days</p>
+<p>4. Anonymized analytics may be retained as described in Section 7</p>
+
+<p>You can also email <strong>privacy@healer.app</strong> to request deletion.</p>
+
+<hr/>
+
+<h3>12. Changes to This Policy</h3>
+
+<p>We may update this policy. Material changes will be communicated via:</p>
+<ul>
+<li>In-app notification on next launch</li>
+<li>Email to your registered address</li>
+<li>Push notification</li>
+</ul>
+
+<p>You will be asked to re-accept the policy if material changes affect your rights.</p>
+
+<hr/>
+
+<h3>13. Contact</h3>
+
+<p><strong>Data Controller:</strong></p>
+<p>Bevita Health AG</p>
+<p>[Address — to be filled]</p>
+<p>[Country]</p>
+
+<p><strong>Privacy contact:</strong> privacy@healer.app</p>
+<p><strong>Data Protection Officer (if required):</strong> dpo@healer.app</p>
+<p><strong>Supervisory Authority (EU users):</strong> [your applicable DPA based on incorporation]</p>
+
+<hr/>
+
+<h2>Lawyer review checklist</h2>
+
+<ul>
+<li>[ ] Jurisdiction-specific compliance (EU GDPR, US CCPA, Russia 152-FZ if launching there)</li>
+<li>[ ] Cross-border transfer mechanism documented (DPF for US, SCC for China)</li>
+<li>[ ] DPO designation evaluated (required if monitoring at scale)</li>
+<li>[ ] Cookie/tracker consent banner needed for landing page (separate from app)</li>
+<li>[ ] App Privacy "nutrition label" entries (iOS) prepared from this policy</li>
+<li>[ ] Google Play Data Safety form prepared</li>
+<li>[ ] Translated version (Russian) reviewed by native lawyer</li>
+<li>[ ] Children's privacy compliance verified (COPPA in US, age limits in EU)</li>
+<li>[ ] Special category health data consent flow documented and compliant</li>
+</ul>
+
+<h2>Implementation notes</h2>
+
+<ul>
+<li>Privacy Policy URL must be public (used by App Store / Play Store / Stripe / RevenueCat)</li>
+<li>Host on www.healer.app/privacy or similar</li>
+<li>Update timestamp every time it changes; users must re-accept material changes</li>
+<li>Track acceptance per user with version number (see legal_acceptances table from medical-disclaimer.md)</li>
+</ul>
+</body></html>
