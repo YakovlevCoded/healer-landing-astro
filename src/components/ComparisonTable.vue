@@ -1,15 +1,15 @@
 <script setup>
 const features = [
-  { name: 'Remembers your labs', bevita: true, chatgpt: false, ornament: true },
-  { name: 'Cross-year pattern detection', bevita: true, chatgpt: false, ornament: false },
-  { name: 'Symptom ↔ lab correlation', bevita: true, chatgpt: false, ornament: false },
-  { name: 'Smart retest reminders', bevita: true, chatgpt: false, ornament: false },
-  { name: 'Doctor share link', bevita: true, chatgpt: false, ornament: true },
-  { name: '3D body symptom map', bevita: true, chatgpt: false, ornament: false },
-  { name: 'PDF Health Passport', bevita: true, chatgpt: false, ornament: true },
-  { name: '7 languages', bevita: true, chatgpt: false, ornament: false },
-  { name: 'Works offline', bevita: true, chatgpt: false, ornament: false },
-  { name: 'Privacy-first (your data stays yours)', bevita: true, chatgpt: false, ornament: true },
+  { name: 'Remembers your labs', bevita: true, chatgpt: false, bevel: true },
+  { name: 'Cross-year pattern detection', bevita: true, chatgpt: false, bevel: false },
+  { name: 'Symptom ↔ lab correlation', bevita: true, chatgpt: false, bevel: false },
+  { name: 'Smart retest reminders', bevita: true, chatgpt: false, bevel: false },
+  { name: 'Doctor share link', bevita: true, chatgpt: false, bevel: false },
+  { name: '3D body symptom map', bevita: true, chatgpt: false, bevel: false },
+  { name: 'PDF Health Passport', bevita: true, chatgpt: false, bevel: false },
+  { name: 'Wearable tracking', bevita: true, chatgpt: false, bevel: true },
+  { name: 'AI chat about your data', bevita: true, chatgpt: true, bevel: true },
+  { name: '7 languages', bevita: true, chatgpt: true, bevel: false },
 ]
 </script>
 
@@ -28,13 +28,13 @@ const features = [
           <th class="col-chatgpt">
             <div class="col-header">
               <span class="col-name">ChatGPT</span>
-              <span class="col-tag">good for one-off questions</span>
+              <span class="col-tag">$20/mo</span>
             </div>
           </th>
-          <th class="col-ornament">
+          <th class="col-bevel">
             <div class="col-header">
-              <span class="col-name">Ornament</span>
-              <span class="col-tag">$99/yr</span>
+              <span class="col-name">Bevel</span>
+              <span class="col-tag">$100+/yr</span>
             </div>
           </th>
         </tr>
@@ -50,8 +50,8 @@ const features = [
             <span v-if="f.chatgpt" class="check">✓</span>
             <span v-else class="cross">—</span>
           </td>
-          <td class="col-ornament">
-            <span v-if="f.ornament" class="check">✓</span>
+          <td class="col-bevel">
+            <span v-if="f.bevel" class="check">✓</span>
             <span v-else class="cross">—</span>
           </td>
         </tr>
@@ -71,10 +71,10 @@ const features = [
               <span class="sub">plus your time</span>
             </div>
           </td>
-          <td class="col-ornament">
+          <td class="col-bevel">
             <div class="col-footer">
-              <span class="price">$99/yr</span>
-              <span class="sub">+ in-app purchases</span>
+              <span class="price">$100+/yr</span>
+              <span class="sub">EU pays even more</span>
             </div>
           </td>
         </tr>
