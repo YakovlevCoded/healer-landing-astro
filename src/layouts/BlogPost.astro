@@ -10,10 +10,10 @@ interface Props {
   author?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [], author = 'Healer Team' } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [], author = 'Bevita Team' } = Astro.props;
 ---
 
-<BaseLayout title={`${title} — Healer Blog`} description={description}>
+<BaseLayout title={`${title} — Bevita Blog`} description={description}>
   <article class="article">
     <header class="article-header">
       <div class="shell">

@@ -3,7 +3,7 @@ title: "What Does Low Ferritin Actually Mean?"
 description: "Ferritin is one of the most commonly tested biomarkers, yet many people don't understand what their results really indicate. A guide to interpreting ferritin levels."
 pubDate: 2026-06-12
 tags: ["biomarkers", "blood-tests", "iron"]
-author: "Healer Team"
+author: "Bevita Team"
 ---
 
 Ferritin is one of the most frequently ordered blood tests, yet it's also one of the most misunderstood. Your doctor might say "your ferritin is low" — but what does that actually mean for your health?
@@ -50,8 +50,8 @@ The tricky part: the "normal" range on your lab report often starts as low as 12
 3. **Don't self-supplement blindly** — too much iron is also dangerous. Get tested first.
 4. **Track your levels** — ferritin changes slowly. Re-test in 3 months after any intervention.
 
-## How Healer helps
+## How Bevita helps
 
-When you upload your lab results to Healer, it tracks your ferritin over time, shows you the trend, and flags when it's time to retest. If your ferritin has been dropping over multiple tests, Healer connects that pattern to your symptom journal — if you've been logging fatigue, it might suggest: "Your declining ferritin correlates with your reported fatigue symptoms. Consider discussing iron supplementation with your clinician."
+When you upload your lab results to Bevita, it tracks your ferritin over time, shows you the trend, and flags when it's time to retest. If your ferritin has been dropping over multiple tests, Bevita connects that pattern to your symptom journal — if you've been logging fatigue, it might suggest: "Your declining ferritin correlates with your reported fatigue symptoms. Consider discussing iron supplementation with your clinician."
 
 That's the difference between a single number on a lab report and a health record that actually understands your story.
