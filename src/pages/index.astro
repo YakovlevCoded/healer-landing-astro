@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ComparisonTable from '../components/ComparisonTable.vue';
 import FeatureHighlight from '../components/FeatureHighlight.vue';
-import PipelineViz from '../components/PipelineViz.vue';
+import PipelineViz from '../components/DataGraph.vue';
 ---
 
 <BaseLayout
@@ -120,13 +120,14 @@ import PipelineViz from '../components/PipelineViz.vue';
     </div>
   </section>
 
-  <!-- NOT just another chatbot -->
+  <!-- Data graph visualization -->
   <section class="section section-pipeline">
     <div class="shell">
       <span class="eyebrow">how bevita works</span>
-      <h2>Not just another chatbot.</h2>
-      <p class="section-subtitle">Other health apps slap an LLM on top of your data and call it "AI." Bevita builds a real health record — with a medical-grade pipeline underneath.</p>
-      <PipelineViz client:load />
+      <h2>Your health data,<br/>connected in one graph.</h2>
+      <p class="section-subtitle">Upload a lab result. Bevita extracts every value, connects it to your symptoms, finds patterns across time, and produces a summary your doctor can actually use.</p>
+      <PipelineViz client:only="vue" />
+      <p class="graph-footnote">Every node is a real data point from your health record. Every edge is a connection Bevita found.</p>
     </div>
   </section>
 
@@ -386,6 +387,7 @@ import PipelineViz from '../components/PipelineViz.vue';
   .problem-card p { font-size: 15px; }
 
   .section-pipeline { background: var(--tinted); }
+  .graph-footnote { text-align: center; font-size: 13px; color: var(--ink-3); margin-top: 16px; }
 
   .section-comparison { background: var(--ink); color: var(--on-brand); }
   .section-comparison h2 { color: var(--on-brand); }
