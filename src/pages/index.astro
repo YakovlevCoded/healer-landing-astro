@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ComparisonTable from '../components/ComparisonTable.vue';
 import FeatureHighlight from '../components/FeatureHighlight.vue';
 import PipelineViz from '../components/DataGraph.vue';
+import LottieMascot from '../components/LottieMascot.vue';
 ---
 
 <BaseLayout
@@ -37,49 +38,7 @@ import PipelineViz from '../components/DataGraph.vue';
     <div class="shell">
       <div class="mascot-card">
         <div class="mascot-visual">
-          <svg class="capybara" viewBox="0 0 240 200" width="200" height="170">
-            <!-- Body - barrel shaped, big -->
-            <ellipse cx="120" cy="135" rx="80" ry="48" fill="#8B6914"/>
-            <ellipse cx="120" cy="130" rx="75" ry="43" fill="#A07818"/>
-            <!-- Belly highlight -->
-            <ellipse cx="120" cy="140" rx="55" ry="30" fill="#B89020" opacity="0.5"/>
-            <!-- Head - big, flat, wide -->
-            <ellipse cx="120" cy="82" rx="48" ry="38" fill="#A07818"/>
-            <ellipse cx="120" cy="85" rx="45" ry="35" fill="#B89020"/>
-            <!-- Snout - wide, blunt, capybara-like -->
-            <ellipse cx="120" cy="100" rx="28" ry="16" fill="#C4A028"/>
-            <ellipse cx="120" cy="98" rx="25" ry="13" fill="#D4B838"/>
-            <!-- Nostrils -->
-            <circle cx="112" cy="96" r="3" fill="#6B4E0A"/>
-            <circle cx="128" cy="96" r="3" fill="#6B4E0A"/>
-            <!-- Eyes - small, high on head -->
-            <circle cx="100" cy="78" r="5" fill="#1B1F1A"/>
-            <circle cx="140" cy="78" r="5" fill="#1B1F1A"/>
-            <circle cx="102" cy="76" r="2" fill="white"/>
-            <circle cx="142" cy="76" r="2" fill="white"/>
-            <!-- Ears - small, rounded -->
-            <ellipse cx="82" cy="62" rx="8" ry="10" fill="#A07818" transform="rotate(-10 82 62)"/>
-            <ellipse cx="158" cy="62" rx="8" ry="10" fill="#A07818" transform="rotate(10 158 62)"/>
-            <ellipse cx="82" cy="62" rx="5" ry="7" fill="#C4A028" transform="rotate(-10 82 62)"/>
-            <ellipse cx="158" cy="62" rx="5" ry="7" fill="#C4A028" transform="rotate(10 158 62)"/>
-            <!-- Cheeks -->
-            <circle cx="92" cy="92" r="8" fill="#E8A080" opacity="0.3"/>
-            <circle cx="148" cy="92" r="8" fill="#E8A080" opacity="0.3"/>
-            <!-- Mouth - subtle smile -->
-            <path d="M 110 104 Q 120 110 130 104" stroke="#6B4E0A" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <!-- Legs - short, stubby -->
-            <rect x="80" y="165" width="14" height="18" rx="7" fill="#8B6914"/>
-            <rect x="146" y="165" width="14" height="18" rx="7" fill="#8B6914"/>
-            <!-- Feet -->
-            <ellipse cx="87" cy="183" rx="10" ry="5" fill="#6B4E0A"/>
-            <ellipse cx="153" cy="183" rx="10" ry="5" fill="#6B4E0A"/>
-            <!-- Stethoscope -->
-            <path d="M 95 115 Q 70 125 65 150" stroke="#2D5F4A" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <circle cx="65" cy="155" r="7" fill="#2D5F4A"/>
-            <circle cx="65" cy="155" r="4" fill="#D5E2DA"/>
-            <!-- Little leaf -->
-            <path d="M 128 52 Q 138 42 143 52 Q 138 57 128 52" fill="#2D5F4A"/>
-          </svg>
+          <LottieMascot client:idle size={180} />
         </div>
         <div class="mascot-text">
           <span class="eyebrow">meet your health buddy</span>
@@ -251,22 +210,7 @@ import PipelineViz from '../components/DataGraph.vue';
   <section id="download" class="section section-cta">
     <div class="shell">
       <div class="cta-mascot">
-        <svg class="capybara-small" viewBox="0 0 240 200" width="100" height="85">
-          <ellipse cx="120" cy="135" rx="80" ry="48" fill="#8B6914"/>
-          <ellipse cx="120" cy="130" rx="75" ry="43" fill="#A07818"/>
-          <ellipse cx="120" cy="82" rx="48" ry="38" fill="#A07818"/>
-          <ellipse cx="120" cy="85" rx="45" ry="35" fill="#B89020"/>
-          <ellipse cx="120" cy="100" rx="28" ry="16" fill="#C4A028"/>
-          <circle cx="100" cy="78" r="5" fill="#1B1F1A"/>
-          <circle cx="140" cy="78" r="5" fill="#1B1F1A"/>
-          <circle cx="102" cy="76" r="2" fill="white"/>
-          <circle cx="142" cy="76" r="2" fill="white"/>
-          <circle cx="112" cy="96" r="3" fill="#6B4E0A"/>
-          <circle cx="128" cy="96" r="3" fill="#6B4E0A"/>
-          <path d="M 110 104 Q 120 110 130 104" stroke="#6B4E0A" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <circle cx="92" cy="92" r="8" fill="#E8A080" opacity="0.3"/>
-          <circle cx="148" cy="92" r="8" fill="#E8A080" opacity="0.3"/>
-        </svg>
+        <LottieMascot client:idle size={120} />
       </div>
       <h2>Your health deserves<br/>a better memory.</h2>
       <p class="section-subtitle">Start free. Upload your first lab result in 30 seconds.</p>
@@ -291,14 +235,7 @@ import PipelineViz from '../components/DataGraph.vue';
           <h4>Bevita</h4>
           <p>Your health, remembered.</p>
           <div class="footer-mascot">
-            <svg viewBox="0 0 240 200" width="48" height="40">
-              <ellipse cx="120" cy="135" rx="80" ry="48" fill="#8B6914"/>
-              <ellipse cx="120" cy="82" rx="48" ry="38" fill="#A07818"/>
-              <ellipse cx="120" cy="85" rx="45" ry="35" fill="#B89020"/>
-              <circle cx="100" cy="78" r="5" fill="#1B1F1A"/>
-              <circle cx="140" cy="78" r="5" fill="#1B1F1A"/>
-              <path d="M 110 104 Q 120 110 130 104" stroke="#6B4E0A" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
+            <LottieMascot client:idle size={48} />
           </div>
         </div>
         <div class="footer-links">
