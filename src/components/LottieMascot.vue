@@ -5,7 +5,6 @@ const animContainer = ref(null)
 let animInstance = null
 
 const props = defineProps({
-  src: { type: String, default: 'https://assets-v2.lottiefiles.com/a/00533084-0344-11f0-badc-db8e11723b5c/nnpBWx7QWE.json' },
   size: { type: Number, default: 200 },
   loop: { type: Boolean, default: true },
 })
@@ -19,7 +18,7 @@ onMounted(async () => {
       renderer: 'svg',
       loop: props.loop,
       autoplay: true,
-      path: props.src,
+      path: '/capybara.json',
     })
   } catch (e) {
     console.warn('Lottie failed to load:', e)
