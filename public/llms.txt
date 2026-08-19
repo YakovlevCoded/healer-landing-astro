@@ -1,0 +1,20 @@
+# Bevita
+
+> Bevita is an iOS app that reads your blood test results, tracks your biomarkers over time, and flags patterns before they become a diagnosis. Upload lab PDFs, see trends across every test, get plain-English explanations of what each marker means, tie symptoms to your labs, and share a clear picture with your doctor. Free to start. iOS only.
+
+## App
+- [Download Bevita on the App Store](https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563): Blood test & lab results tracker for iPhone and iPad.
+- [Homepage](https://bevita.app): What Bevita does and who it's for.
+
+## Blog — biomarker & health guides
+- [How to Know If You Have Insulin Resistance](https://bevita.app/blog/how-to-know-if-you-have-insulin-resistance/): Signs, tests (HOMA-IR, fasting insulin, HbA1c), and how to track it over time.
+- [How to Read Blood Test Results](https://bevita.app/blog/how-to-read-blood-test-results/): Plain-English guide to interpreting a lab report.
+- [What Does Low Ferritin Mean](https://bevita.app/blog/low-ferritin-guide/): Interpreting ferritin levels and iron stores.
+- [Ferritin Levels Chart](https://bevita.app/blog/ferritin-levels-chart/): Normal vs optimal ferritin ranges.
+- [High TSH Explained](https://bevita.app/blog/high-tsh-thyroid-explained/): What high TSH says about your thyroid.
+- [Best Blood Test Tracker Apps 2026](https://bevita.app/blog/best-blood-test-tracker-apps-2026/): Comparison of apps for tracking lab results.
+- [ChatGPT vs Health Apps](https://bevita.app/blog/chatgpt-vs-health-apps/): Why a dedicated app beats pasting labs into a chatbot.
+- [Why Your Health App Should Export Data](https://bevita.app/blog/why-health-app-should-export-data/): Owning and sharing your medical records.
+
+## About
+- Full sitemap: https://bevita.app/sitemap-index.xml

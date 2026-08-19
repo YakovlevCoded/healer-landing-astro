@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { VALUES, BANDS, slugFor, bandFor, REF_LOW, REF_HIGH, TREAT_HIGH } from '../../data/tsh-levels';
+
+const title = 'TSH Levels by Number: Look Up Your Result';
+const description =
+  'Find your exact TSH result and what it means. Every level from 0.01 to 100 mIU/L, with the reference range, the treatment threshold and what to test alongside.';
+
+const grouped = BANDS.map((b) => ({
+  band: b,
+  values: VALUES.filter((v) => bandFor(v).id === b.id),
+})).filter((g) => g.values.length > 0);
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    name: title,
+    description,
+    about: { '@type': 'MedicalTest', name: 'Thyroid stimulating hormone (TSH) test' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'TSH levels', item: canonical },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${title} — Bevita`} description={description} schemas={schemas} image="/images/bevita-insulin-resistance-screen.jpg">
+  <article class="hub">
+    <header class="hub-head">
+      <div class="shell">
+        <a href="/blog/" class="back">← Bevita blog</a>
+        <h1>TSH levels by number</h1>
+        <p class="lede">{description}</p>
+      </div>
+    </header>
+
+    <div class="body shell">
+      <p>
+        A TSH result is easy to look up and hard to interpret, because the same number means
+        different things depending on where it falls. The usual adult reference range is roughly
+        <strong>{REF_LOW} to {REF_HIGH} mIU/L</strong>, and treatment for an underactive thyroid is
+        typically considered above <strong>{TREAT_HIGH} mIU/L</strong> — but the interesting
+        territory is everything in between.
+      </p>
+      <p>
+        Pick your value below. Each page covers what that specific level means, what tends to cause
+        it, whether treatment is usually indicated, and which tests belong alongside it. If your
+        exact number isn't listed, the nearest one will read the same way.
+      </p>
+
+      {grouped.map((g) => (
+        <section class="group">
+          <h2>{g.band.label}</h2>
+          <p class="range">
+            {g.band.max === Infinity
+              ? `Above ${g.band.min} mIU/L`
+              : `${g.band.min} – ${g.band.max} mIU/L`}
+            {' · '}{g.band.verdict}
+          </p>
+          <ul class="grid">
+            {g.values.map((v) => (
+              <li><a href={`/tsh/${slugFor(v)}/`}>TSH {v}</a></li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+      <h2>Reading a TSH result properly</h2>
+      <p>
+        TSH runs opposite to thyroid output: it rises when the thyroid underperforms and falls when
+        it overperforms. That's why a high TSH means an <em>underactive</em> thyroid, which catches
+        most people out. For the mechanism, start with{' '}
+        <a href="/blog/high-tsh-thyroid-explained/">what a high TSH is actually telling you</a>, and
+        for the hormones TSH is regulating, see{' '}
+        <a href="/blog/free-t3-t4-explained/">free T3 and free T4 explained</a>.
+      </p>
+      <p>
+        Two caveats apply to every value on this page. Reference ranges differ between laboratories,
+        so compare against the range printed on your own report rather than a range from the
+        internet. And single readings fluctuate — TSH peaks overnight, shifts with illness, and
+        responds slowly to real change, so the trend across several tests carries more information
+        than any one result.
+      </p>
+
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/blog/high-tsh-thyroid-explained/">High TSH: what your thyroid is actually telling you</a></li>
+        <li><a href="/blog/high-tsh-causes/">What causes high TSH</a></li>
+        <li><a href="/blog/high-tsh-symptoms/">High TSH symptoms</a></li>
+        <li><a href="/blog/high-tsh-high-t4/">High TSH with high T4</a></li>
+        <li><a href="/blog/tsh-over-100/">TSH over 100</a></li>
+        <li><a href="/blog/hyperthyroidism-tsh/">Hyperthyroidism and TSH</a></li>
+        <li><a href="/blog/ultrasensitive-tsh/">Ultrasensitive TSH explained</a></li>
+        <li><a href="/blog/thyroid-antibodies-tpo/">Thyroid antibodies (TPO)</a></li>
+      </ul>
+
+      <p class="disclaimer">
+        This page is for education and isn't medical advice. Discuss your results with a qualified
+        clinician.
+      </p>
+    </div>
+
+    <div class="cta shell">
+      <div class="cta-box">
+        <h3>Track your TSH instead of looking it up</h3>
+        <p>
+          Upload your lab reports to Bevita and it keeps every TSH and free T4 with its date, charts
+          the trend, and reads them against the symptoms you log. Free to start.
+        </p>
+        <a href="https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563" class="badge">Download on the App Store</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .shell { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .hub-head { padding: 120px 0 32px; }
+  .back { display: inline-block; font-size: 14px; color: var(--ink-3); margin-bottom: 24px; }
+  .back:hover { color: var(--forest); }
+  .lede { font-size: 20px; color: var(--ink-2); max-width: 54ch; }
+  .body { padding-block: 8px 64px; }
+  .body h2 { margin-top: 48px; margin-bottom: 12px; }
+  .body p { margin-bottom: 16px; max-width: 65ch; }
+  .body ul { margin-bottom: 16px; padding-left: 24px; }
+  .body li { margin-bottom: 8px; color: var(--ink-2); font-size: 17px; }
+  .body a { color: var(--forest); font-weight: 500; }
+  .body a:hover { text-decoration: underline; }
+  .group { margin-top: 40px; }
+  .group h2 { margin-bottom: 4px; }
+  .range { font-size: 14px; color: var(--ink-3); margin-bottom: 16px; }
+  .grid { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .grid li { margin: 0; }
+  .grid a {
+    display: inline-block; padding: 8px 14px; border-radius: 10px;
+    background: var(--card); border: 1px solid var(--line); font-size: 15px;
+  }
+  .grid a:hover { border-color: var(--forest); text-decoration: none; }
+  .disclaimer { font-style: italic; color: var(--ink-3); font-size: 15px; margin-top: 32px; }
+  .cta { padding-block: 0 96px; }
+  .cta-box {
+    background: var(--tinted); border: 1px solid var(--line); border-radius: 16px;
+    padding: 32px; text-align: center;
+  }
+  .cta-box h3 { margin-bottom: 8px; }
+  .cta-box p { margin: 0 auto 20px; color: var(--ink-2); font-size: 16px; max-width: 44ch; }
+  .badge {
+    display: inline-block; padding: 10px 20px; border-radius: 10px;
+    background: var(--ink); color: var(--on-brand); font-size: 13px; font-weight: 500;
+  }
+</style>

@@ -3,14 +3,51 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  /** JSON-LD objects to inject for this page (Article, FAQPage, etc.). Homepage app/org schema is always included. */
+  schemas?: Record<string, unknown>[];
+  /** Page language (default 'en'). */
+  lang?: string;
+  /** hreflang alternates: [{ lang, path }] pointing to translated versions. */
+  alternates?: { lang: string; path: string }[];
 }
 
-const { title, description, image = '/og-default.png' } = Astro.props;
+const { title, description, image = '/og-default.png', schemas = [], lang = 'en', alternates = [] } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const APP_STORE_URL = 'https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563';
+
+// Brand entity — emitted on every page so LLMs/search build a consistent Bevita entity.
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Bevita',
+  url: 'https://bevita.app',
+  logo: 'https://bevita.app/favicon.svg',
+  description: 'Bevita is an iOS app that reads your blood test results, tracks your biomarkers over time, and flags patterns before they become a diagnosis.',
+  sameAs: [APP_STORE_URL],
+};
+
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Bevita',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'iOS',
+  description,
+  url: 'https://bevita.app',
+  installUrl: APP_STORE_URL,
+  offers: [
+    { '@type': 'Offer', price: '0', priceCurrency: 'USD', category: 'Free tier' },
+    { '@type': 'Offer', price: '89', priceCurrency: 'USD', category: 'Bevita Pro (annual)' },
+  ],
+};
+
+// Homepage gets app + org; other pages get org + whatever the page passes (e.g. Article).
+const isHome = Astro.url.pathname === '/';
+const jsonLd = isHome ? [appSchema, orgSchema, ...schemas] : [orgSchema, ...schemas];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -36,35 +73,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
-    <!-- hreflang for i18n -->
-    <link rel="alternate" hreflang="en" href={new URL('/', Astro.site)} />
-    <link rel="alternate" hreflang="es" href={new URL('/es/', Astro.site)} />
-    <link rel="alternate" hreflang="de" href={new URL('/de/', Astro.site)} />
-    <link rel="alternate" hreflang="fr" href={new URL('/fr/', Astro.site)} />
-    <link rel="alternate" hreflang="pt" href={new URL('/pt/', Astro.site)} />
-    <link rel="alternate" hreflang="zh" href={new URL('/zh/', Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+    <!-- hreflang — self + any translated alternates -->
+    <link rel="alternate" hreflang={lang} href={canonicalURL} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.lang} href={new URL(a.path, Astro.site)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? Astro.url.pathname : (alternates.find((a) => a.lang === 'en')?.path ?? '/'), Astro.site)} />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=Geist:wght@300..700&display=swap" rel="stylesheet" />
 
-    <!-- Schema.org -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Bevita",
-      "applicationCategory": "HealthApplication",
-      "operatingSystem": "iOS, Android",
-      "description": description,
-      "url": "https://healer.health",
-      "offers": {
-        "@type": "Offer",
-        "price": "9.99",
-        "priceCurrency": "USD"
-      }
-    })} />
+    <!-- Schema.org / JSON-LD -->
+    {jsonLd.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
     <slot />

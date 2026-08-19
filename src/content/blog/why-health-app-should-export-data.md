@@ -1,9 +1,15 @@
 ---
 title: "Why Your Health App Should Let You Take Your Data With You"
-description: "You've tracked your labs for months. But can you share that with your doctor? Most apps say no."
+description: "You've tracked your labs for months, but can you actually hand that history to your doctor? Most apps say no. Here's why portability matters."
 pubDate: 2026-06-15
+heroImage: "/images/bevita-insulin-resistance-screen.jpg"
 tags: ["health-data", "doctor-visit", "export"]
 author: "Bevita Team"
+faq:
+  - q: "Why does health data export matter?"
+    a: "Because your clinician needs the full picture: lab history, trends, symptom context and medications. If your app only shows values on screen with no way to export them, that history is effectively trapped and your doctor is working blind."
+  - q: "What should a good health data export include?"
+    a: "Every result organised by date, trend charts over time, a summary connecting the findings, and a shareable link or PDF your clinician can open without installing anything."
 ---
 
 You've been tracking your health for months. You've uploaded 12 lab results, logged 47 symptoms, connected your wearable.

@@ -1,9 +1,15 @@
 ---
 title: "Your Health App Has Memory. Or It Doesn't."
-description: "Some health apps remember your data forever. Others forget it the moment you close the tab. Here's how to tell which is which."
+description: "Some health apps remember your data forever, others forget it when you close the tab. Here's how to tell an LLM wrapper from a real health record."
 pubDate: 2026-06-20
+heroImage: "/images/bevita-insulin-resistance-screen.jpg"
 tags: ["ai-health", "health-apps", "data-export"]
 author: "Bevita Team"
+faq:
+  - q: "What is the difference between an AI health app and an LLM wrapper?"
+    a: "An LLM wrapper passes your data to a language model and shows you the reply, keeping nothing afterwards. A real health record structures and stores your results, so the AI can answer questions about your own history rather than only about the text you just pasted."
+  - q: "How can I tell which type an app is?"
+    a: "Ask it three things: show me my ferritin from last March, what is connected to my fatigue, and give me a PDF for my doctor. A wrapper fails all three, because it has no memory of your data and nothing structured to export."
 ---
 
 There's a new health app every week. They all say "AI-powered." They all have a chat interface.

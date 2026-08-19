@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = 'June 22, 2026';
+const contact = 'bevitahealthapp@gmail.com';
+---
+
+<BaseLayout
+  title="Terms of Service — Bevita"
+  description="The terms that govern your use of the Bevita app and services."
+>
+  <main class="legal">
+    <div class="shell">
+      <a class="back" href="/">← Back to Bevita</a>
+      <h1>Terms of Service</h1>
+      <p class="meta">Last updated: {updated}</p>
+
+      <p>By using Bevita, you agree to these terms. If you don't agree, don't use the app.</p>
+
+      <h2>1. About Bevita</h2>
+      <p>Bevita is operated by Leonid Iakovlev (sole proprietor), Tbilisi, Georgia ("we", "us"). Bevita is a mobile application for organizing and understanding personal health data, available on iOS and Android.</p>
+
+      <h2>2. Eligibility</h2>
+      <p>You must be at least 18 years old to use Bevita. By creating an account, you confirm you are 18 or older.</p>
+
+      <h2>3. Account</h2>
+      <p>You are responsible for keeping your login credentials secure, all activity under your account, providing accurate profile information, and notifying us of any unauthorized access. We may suspend or terminate accounts that violate these terms.</p>
+
+      <h2>4. Subscription &amp; Billing</h2>
+      <ul>
+        <li><strong>Free tier:</strong> a limited free tier is available — see in-app details for current limits.</li>
+        <li><strong>Premium subscription:</strong> see in-app pricing for current rates; pricing may vary by country.</li>
+        <li><strong>Billing:</strong> managed by the Apple App Store or Google Play.</li>
+        <li><strong>Auto-renewal:</strong> subscriptions auto-renew unless cancelled at least 24 hours before the period ends.</li>
+        <li><strong>Refunds:</strong> handled per Apple/Google refund policies; we do not control refund decisions.</li>
+        <li><strong>Cancellation:</strong> cancel anytime via your App Store / Play Store subscription settings; you retain access until the period ends.</li>
+      </ul>
+
+      <h2>5. Acceptable Use</h2>
+      <p>You agree NOT to: use Bevita for medical decisions without consulting a qualified provider; upload content that isn't yours or violates others' rights; reverse engineer or extract data from the app; use automated tools to access the service; resell or commercialize Bevita or its data; upload malicious files or attempt to compromise our security; or impersonate another person.</p>
+
+      <h2>6. Medical Disclaimer</h2>
+      <p><strong>Bevita is not a medical service.</strong> It is informational only and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical decisions. Do not use Bevita in emergencies — call your local emergency number. AI-generated content can be wrong; always verify extracted lab values against your original reports.</p>
+
+      <h2>7. AI-Generated Content</h2>
+      <p>Bevita uses third-party AI to extract data from your uploads and generate health insights. AI outputs may contain errors or omissions, should not be relied upon as authoritative medical information, and are intended as starting points for conversation with healthcare providers. You are responsible for verifying AI-extracted values against your original lab reports.</p>
+
+      <h2>8. Your Content</h2>
+      <p>You retain ownership of all data and content you upload to Bevita. By uploading content, you grant us a limited license to store and process it to provide the service (including processing via third-party AI providers) and to generate aggregated, anonymized analytics. This license ends when you delete the content or your account. We do not sell your data, train AI models on your specific data without consent, or use your content for advertising.</p>
+
+      <h2>9. Service Availability</h2>
+      <p>We aim for high availability but do not guarantee uninterrupted service. We may perform scheduled maintenance, temporarily suspend service for emergencies, or discontinue features with reasonable notice.</p>
+
+      <h2>10. Pricing Changes</h2>
+      <p>We may change subscription prices with at least 30 days' notice. Price changes take effect at your next renewal, and you can cancel before the change takes effect.</p>
+
+      <h2>11. Intellectual Property</h2>
+      <p>Bevita's app, design, code, content, trademarks, and brand belong to us. You receive a limited license to use the app, not ownership. You may not copy our design or code, use "Bevita" branding for your own service, or create derivative works.</p>
+
+      <h2>12. Termination</h2>
+      <p>We may terminate your account if you violate these terms, fail to pay subscription fees, or use the app to harm others or our service. You may terminate by deleting your account in Settings. Upon termination, your access ends and data is retained then deleted per the Privacy Policy.</p>
+
+      <h2>13. Disclaimers &amp; Limitation of Liability</h2>
+      <p>Bevita is provided "as is" without warranties of any kind. To the maximum extent permitted by law, our total liability for any claim is limited to the amount you paid in the 12 months preceding the claim, or EUR 100, whichever is greater. We are not liable for health outcomes attributed to app use, AI errors, decisions made based on app content, indirect or consequential damages, or service interruptions. These limitations do not apply where prohibited by law (e.g. gross negligence, or death/personal injury caused by our negligence), and EU consumers retain their mandatory statutory rights.</p>
+
+      <h2>14. Indemnification</h2>
+      <p>You agree to indemnify us against claims arising from your violation of these terms, your misuse of the app, your violation of others' rights, or content you upload.</p>
+
+      <h2>15. Governing Law &amp; Disputes</h2>
+      <p>These terms are governed by the laws of Georgia. Disputes will be resolved first by good-faith negotiation, and otherwise by the competent courts of Georgia. EU consumers retain the right to bring actions in their country of residence under applicable consumer protection law.</p>
+
+      <h2>16. Changes to Terms</h2>
+      <p>We may update these terms. Material changes will be communicated in advance via the app and/or email. Continued use constitutes acceptance.</p>
+
+      <h2>17. Severability</h2>
+      <p>If any provision is unenforceable, the rest remains in effect.</p>
+
+      <h2>18. Contact</h2>
+      <p>Bevita — operated by Leonid Iakovlev, Tbilisi, Georgia.<br/>Support &amp; legal: <a href={`mailto:${contact}`}>{contact}</a></p>
+
+      <p class="footnote"><a href="/privacy/">Privacy Policy →</a></p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .legal { padding: 48px 0 96px; }
+  .shell { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+  .back { color: var(--forest); font-size: 15px; display: inline-block; margin-bottom: 24px; }
+  .legal h1 { font-size: clamp(34px, 6vw, 52px); margin-bottom: 8px; }
+  .legal h2 { font-size: clamp(22px, 3vw, 28px); margin: 40px 0 12px; }
+  .legal p { margin-bottom: 14px; max-width: none; }
+  .legal ul { margin: 0 0 16px 22px; }
+  .legal li { color: var(--ink-2); font-size: 17px; line-height: 1.6; margin-bottom: 6px; }
+  .legal a { color: var(--forest); text-decoration: underline; }
+  .legal .meta { color: var(--ink-3); font-size: 15px; margin-bottom: 28px; }
+  .legal .footnote { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
+</style>

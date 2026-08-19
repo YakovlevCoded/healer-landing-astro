@@ -1,0 +1,292 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { VALUES, BANDS, slugFor, factsFor, REF_LOW, REF_HIGH, TREAT_HIGH } from '../../data/tsh-levels';
+
+export async function getStaticPaths() {
+  return VALUES.map((value) => ({ params: { value: slugFor(value) }, props: { value } }));
+}
+
+const { value } = Astro.props as { value: number };
+const f = factsFor(value);
+const band = f.band;
+
+// Inline bold only — content is ours, not user input.
+const md = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+const title = `TSH ${value}: What This Level Means`;
+
+const DESC: Record<string, string> = {
+  undetectable: `A TSH of ${value} sits at the floor of what an assay can measure, which points to an overactive thyroid. What this level means and which tests come next.`,
+  'deeply-suppressed': `A TSH of ${value} is far below the reference range, a clear signal of excess thyroid hormone. What causes it, whether it needs treating and what to test.`,
+  'clearly-low': `A TSH of ${value} is below the reference range. With a normal T4 that means subclinical hyperthyroidism. What it means, the causes, and what to test.`,
+  'borderline-low': `A TSH of ${value} is a shade under the reference range, close enough that another lab might call it normal. What it means and why repeating matters.`,
+  'low-normal': `A TSH of ${value} is normal, toward the lower end of the range. What that means, when a low-normal TSH matters, and what to check if you feel unwell.`,
+  'mid-normal': `A TSH of ${value} is squarely normal, so if you feel unwell the answer is likely elsewhere on the panel. What this level means and what to check next.`,
+  'upper-mid-normal': `A TSH of ${value} is a normal result sitting just above the midpoint. Where the 2.5 debate comes from, what can cause it, and which tests actually settle it.`,
+  'high-normal': `A TSH of ${value} falls in the most-debated stretch of the normal range. Whether that matters, what causes it, and which tests settle the question.`,
+  'top-of-normal': `A TSH of ${value} sits at the very top of normal, thin enough that another lab might flag it. What it means and why the trend matters more than the value.`,
+  'just-over': `A TSH of ${value} is just above the reference range, the most common abnormal thyroid result there is. What it means, and what to test before deciding.`,
+  'mild-subclinical': `A TSH of ${value} is clearly above the reference range but below the treatment threshold. What that means, what causes it, and what to test alongside.`,
+  'approaching-threshold': `A TSH of ${value} sits close to the level where treatment is usually advised. What that means, why free T4 decides it, and what to test alongside.`,
+  overt: `A TSH of ${value} is past the threshold where treatment is usually recommended. What overt hypothyroidism means, what causes it, and what to test next.`,
+  marked: `A TSH of ${value} indicates marked hypothyroidism that has been developing for a long time. What it means, what causes it, and which tests come next.`,
+  severe: `A TSH of ${value} indicates severe, long-standing hypothyroidism that needs prompt care. What it means, what causes it, and which tests come next.`,
+};
+const description = DESC[band.id];
+
+// Value-specific arithmetic. This is what keeps two pages inside the same segment distinct —
+// every sentence below resolves to different numbers for different values.
+const placement: string[] = [];
+if (f.belowLow !== null) {
+  placement.push(
+    `At ${value} mIU/L you are ${f.belowLow} below the ${REF_LOW} floor of the usual reference range — roughly ${f.timesLow}× lower than the bottom of normal.`
+  );
+  placement.push(
+    `To come back inside the range this would need to rise by at least ${f.belowLow}. Because TSH is reported on a scale where small absolute differences carry weight at the low end, that gap is larger than it looks.`
+  );
+} else if (f.inRange) {
+  const fromLow = Math.round((value - REF_LOW) * 100) / 100;
+  const fromHigh = Math.round((REF_HIGH - value) * 100) / 100;
+  const pct = Math.round(((value - REF_LOW) / (REF_HIGH - REF_LOW)) * 100);
+  placement.push(
+    `At ${value} mIU/L you are inside the usual ${REF_LOW}–${REF_HIGH} range: ${fromLow} above the floor and ${fromHigh} below the ceiling, which puts you about ${pct}% of the way up the reference band.`
+  );
+  placement.push(
+    `A rise of ${fromHigh} would take you out of range at the top; a fall of ${fromLow} would take you out at the bottom. Neither is a large movement for a marker that varies through the day, which is why one reading is a starting point rather than a verdict.`
+  );
+} else if (f.belowTreat !== null) {
+  placement.push(
+    `At ${value} mIU/L you are ${f.aboveHigh} above the ${REF_HIGH} ceiling of the reference range — about ${f.timesHigh}× the upper limit — and ${f.belowTreat} below ${TREAT_HIGH}, the level at which treatment for an underactive thyroid is usually recommended.`
+  );
+  placement.push(
+    `So this sits in the gap where the decision is a judgement rather than a rule. A further rise of ${f.belowTreat} would cross into the range where levothyroxine is normally started; a fall of ${f.aboveHigh} would bring you back inside normal.`
+  );
+} else {
+  placement.push(
+    `At ${value} mIU/L you are ${f.aboveHigh} above the ${REF_HIGH} ceiling of the reference range — roughly ${f.timesHigh}× the upper limit — and past the ${TREAT_HIGH} mark where treatment is usually recommended.`
+  );
+  placement.push(
+    `Values at this magnitude are not reached quickly. Getting from the top of normal to ${value} means the pituitary has been escalating its signal for a long stretch, which is itself part of what the number tells you.`
+  );
+}
+
+// Neighbouring values — gives every page inbound links and a crawlable ladder.
+const idx = VALUES.indexOf(value);
+const neighbours = VALUES.filter((_, i) => Math.abs(i - idx) > 0 && Math.abs(i - idx) <= 3).map((v) => ({
+  v,
+  href: `/tsh/${slugFor(v)}/`,
+  label: `TSH ${v}`,
+  band: factsFor(v).band.label,
+}));
+
+const faq = [
+  {
+    q: `Is a TSH of ${value} normal?`,
+    a: f.inRange
+      ? `Yes — ${value} mIU/L falls inside the usual reference range of about ${REF_LOW} to ${REF_HIGH} mIU/L, so it is reported as normal. Ranges vary slightly between laboratories, and this value sits in the ${band.label.toLowerCase()} part of that range.`
+      : `No — ${value} mIU/L falls outside the usual reference range of about ${REF_LOW} to ${REF_HIGH} mIU/L. It sits in what is generally described as the ${band.label.toLowerCase()}. Reference ranges do vary between laboratories, so compare against the range printed on your own report.`,
+  },
+  {
+    q: `Does a TSH of ${value} need treatment?`,
+    a: band.treatment,
+  },
+  {
+    q: `What should I test alongside a TSH of ${value}?`,
+    a: `${band.alongside.map((s) => s.replace(/\*\*/g, '').split(' — ')[0]).join(', ')}. TSH on its own cannot separate the pituitary's signal from the thyroid's actual output, which is why free T4 is the usual companion test.`,
+  },
+];
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    name: title,
+    description,
+    about: { '@type': 'MedicalTest', name: 'Thyroid stimulating hormone (TSH) test' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Bevita',
+      logo: { '@type': 'ImageObject', url: 'https://bevita.app/favicon.svg' },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'TSH levels', item: new URL('/tsh/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: `TSH ${value}`, item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((x) => ({
+      '@type': 'Question',
+      name: x.q,
+      acceptedAnswer: { '@type': 'Answer', text: x.a },
+    })),
+  },
+];
+---
+
+<BaseLayout title={`${title} — Bevita`} description={description} schemas={schemas} image="/images/bevita-insulin-resistance-screen.jpg">
+  <article class="lv">
+    <header class="lv-head">
+      <div class="shell">
+        <a href="/tsh/" class="back">← All TSH levels</a>
+        <h1>TSH {value}: What This Level Means</h1>
+        <p class="lede">{description}</p>
+        <span class="pill">{band.label}</span>
+      </div>
+    </header>
+
+    <div class="body shell">
+      <h2>Where {value} sits</h2>
+      <p>{placement}</p>
+
+      <table>
+        <tbody>
+          <tr><th>Your value</th><td><strong>{value} mIU/L</strong></td></tr>
+          <tr><th>Usual reference range</th><td>{REF_LOW} – {REF_HIGH} mIU/L (varies by lab)</td></tr>
+          <tr><th>Where it falls</th><td>{band.label}</td></tr>
+          <tr><th>Treatment threshold</th><td>Usually around {TREAT_HIGH} mIU/L for an underactive thyroid</td></tr>
+        </tbody>
+      </table>
+
+      <h2>What a TSH of {value} means</h2>
+      {band.meaning.map((p) => <p>{p}</p>)}
+
+      <h2>{band.causesHeading}</h2>
+      <ul>
+        {band.causes.map((c) => <li set:html={md(c)} />)}
+      </ul>
+
+      <h2>Does a TSH of {value} need treatment?</h2>
+      <p>{band.treatment}</p>
+
+      <h2>What to test alongside it</h2>
+      <ul>
+        {band.alongside.map((c) => <li set:html={md(c)} />)}
+      </ul>
+
+      <h2>How soon to act</h2>
+      <p>{band.urgency}</p>
+
+      <h2>Why one reading is never the whole story</h2>
+      <p>
+        TSH moves. It peaks overnight and early in the morning, shifts with illness and with the
+        laboratory doing the measuring, and responds slowly to any real change — which is why a
+        single value of {value} is a starting point rather than a conclusion. The same number
+        means one thing if it has been stable for years and something quite different if it has
+        been climbing across your last three tests.
+      </p>
+
+      <h2>What this looks like in Bevita</h2>
+      <img
+        src="/images/bevita-insulin-resistance-screen.jpg"
+        alt="Bevita's Overall picture screen showing thyroid markers tracked over time alongside logged symptoms"
+        loading="lazy"
+      />
+      <p>
+        This is the part a single result cannot give you. Bevita keeps every lab report you upload
+        with its date, so your TSH becomes a line rather than a number — and reads it next to free
+        T4 and the symptoms you log instead of in isolation.
+      </p>
+      <p>
+        Upload the report this value came from and you will see where {value} sits against your own
+        history, not just against a reference range built from strangers.
+      </p>
+
+      <h2>Related reading</h2>
+      <ul>
+        {band.links.map((l) => <li><a href={l.href}>{l.text}</a></li>)}
+      </ul>
+
+      <h2>Nearby TSH values</h2>
+      <ul class="ladder">
+        {neighbours.map((n) => <li><a href={n.href}>{n.label}</a> <span>{n.band}</span></li>)}
+      </ul>
+
+      <h2>References</h2>
+      <ol>
+        {band.refs.map((r) => <li><a href={r.href} target="_blank" rel="noopener noreferrer">{r.text}</a></li>)}
+      </ol>
+
+      <p class="disclaimer">
+        This page is for education and isn't medical advice. Reference ranges vary between
+        laboratories — check the range printed on your own report, and discuss your results with a
+        qualified clinician.
+      </p>
+    </div>
+
+    <section class="faq shell">
+      <h2>Frequently asked questions</h2>
+      <dl>
+        {faq.map((x) => (
+          <div class="faq-item">
+            <dt>{x.q}</dt>
+            <dd>{x.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="cta shell">
+      <div class="cta-box">
+        <h3>See what your TSH has actually been doing</h3>
+        <p>
+          Upload your lab reports to Bevita and it tracks your TSH and free T4 across every test,
+          reads them together, and ties them to how you've been feeling. Free to start.
+        </p>
+        <a href="https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563" class="badge">Download on the App Store</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .shell { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .lv-head { padding: 120px 0 40px; }
+  .back { display: inline-block; font-size: 14px; color: var(--ink-3); margin-bottom: 24px; }
+  .back:hover { color: var(--forest); }
+  .lv-head h1 { margin-bottom: 12px; }
+  .lede { font-size: 20px; color: var(--ink-2); max-width: 52ch; }
+  .pill {
+    display: inline-block; margin-top: 16px; padding: 4px 12px; border-radius: 999px;
+    background: var(--forest-soft); color: var(--forest); font-size: 13px; font-weight: 500;
+  }
+  .body { padding-block: 8px 64px; }
+  .body h2 { margin-top: 48px; margin-bottom: 16px; }
+  .body p { margin-bottom: 16px; max-width: 65ch; }
+  .body ul, .body ol { margin-bottom: 16px; padding-left: 24px; }
+  .body li { margin-bottom: 8px; color: var(--ink-2); font-size: 17px; }
+  .body a { color: var(--forest); font-weight: 500; }
+  .body a:hover { text-decoration: underline; }
+  .body img { border-radius: 12px; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 16px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-3); font-weight: 500; width: 45%; }
+  .ladder { list-style: none; padding: 0; }
+  .ladder li { display: flex; gap: 10px; align-items: baseline; border-top: 1px solid var(--line); padding-top: 10px; }
+  .ladder span { font-size: 14px; color: var(--ink-3); }
+  .disclaimer { font-style: italic; color: var(--ink-3); font-size: 15px; margin-top: 32px; }
+  .faq { padding-block: 0 56px; }
+  .faq h2 { margin-bottom: 24px; }
+  .faq-item { border-top: 1px solid var(--line); padding: 20px 0; }
+  .faq-item dt { font-weight: 600; font-size: 18px; margin-bottom: 8px; }
+  .faq-item dd { margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.6; }
+  .cta { padding-block: 0 96px; }
+  .cta-box {
+    background: var(--tinted); border: 1px solid var(--line); border-radius: 16px;
+    padding: 32px; text-align: center;
+  }
+  .cta-box h3 { margin-bottom: 8px; }
+  .cta-box p { margin: 0 auto 20px; color: var(--ink-2); font-size: 16px; max-width: 44ch; }
+  .badge {
+    display: inline-block; padding: 10px 20px; border-radius: 10px;
+    background: var(--ink); color: var(--on-brand); font-size: 13px; font-weight: 500;
+  }
+</style>

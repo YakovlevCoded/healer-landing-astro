@@ -12,6 +12,31 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Auto "related articles" by shared tags — ensures every post gets inbound links
+// (no orphans) and tightens topic clusters. Ranked by number of shared tags, then recency.
+const all = await getCollection('blog');
+const tags = new Set(post.data.tags ?? []);
+const related = all
+  .filter((p) => p.id !== post.id)
+  .map((p) => ({
+    id: p.id,
+    title: p.data.title,
+    shared: (p.data.tags ?? []).filter((t) => tags.has(t)).length,
+    pubDate: p.data.pubDate,
+  }))
+  .filter((p) => p.shared > 0)
+  .sort((a, b) => b.shared - a.shared || b.pubDate.valueOf() - a.pubDate.valueOf())
+  .slice(0, 6)
+  .map((p) => ({ id: p.id, title: p.title }));
+
+// hreflang: if this post has a translation, link to the Spanish version.
+const alternates = [];
+if (post.data.transKey) {
+  const esAll = await getCollection('blogEs');
+  const es = esAll.find((p) => p.data.transKey === post.data.transKey);
+  if (es) alternates.push({ lang: 'es', path: `/es/blog/${es.id}/` });
+}
 ---
 
 <BlogPost
@@ -21,6 +46,11 @@ const { Content } = await render(post);
   updatedDate={post.data.updatedDate}
   tags={post.data.tags}
   author={post.data.author}
+  faq={post.data.faq}
+  heroImage={post.data.heroImage}
+  related={related}
+  lang="en"
+  alternates={alternates}
 >
   <Content />
 </BlogPost>
