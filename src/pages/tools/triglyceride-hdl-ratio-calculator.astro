@@ -1,0 +1,168 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'How do you calculate the triglyceride to HDL ratio?',
+    a: 'Divide triglycerides by HDL cholesterol, using the same unit for both. In mg/dL: triglycerides of 130 divided by HDL of 50 gives a ratio of 2.6. If your panel is in mmol/L the arithmetic is the same, but the thresholds differ because the two lipids convert with different factors — this tool handles that for you.',
+  },
+  {
+    q: 'What is a good triglyceride to HDL ratio?',
+    a: 'In mg/dL, under about 2 is generally considered good and above roughly 3 raises concern for insulin resistance. Published thresholds vary between about 1.5 and 3.0 depending on the population studied, so treat these as a working guide rather than a diagnostic cutoff.',
+  },
+  {
+    q: 'Why is this ratio linked to insulin resistance?',
+    a: 'Insulin resistance drives triglycerides up and HDL down at the same time, so the ratio moves twice as fast as either component. Research has found it performs well as a surrogate marker of insulin resistance — outperforming triglycerides or HDL read on their own — which makes it a free check hiding inside a standard lipid panel.',
+  },
+  {
+    q: 'Does the ratio work in mmol/L?',
+    a: 'Yes, but the numbers are different. Because triglycerides and cholesterol use different conversion factors, a ratio of 3.0 in mg/dL corresponds to roughly 1.3 in mmol/L. Comparing an mmol/L ratio against a mg/dL threshold is a common and misleading mistake.',
+  },
+];
+
+const related = [
+  { href: '/blog/triglyceride-hdl-ratio/', text: 'The triglyceride-to-HDL ratio: a free insulin resistance check' },
+  { href: '/blog/how-to-know-if-you-have-insulin-resistance/', text: 'How to know if you have insulin resistance' },
+  { href: '/blog/triglycerides-explained/', text: 'Triglycerides explained' },
+  { href: '/tools/homa-ir-calculator/', text: 'HOMA-IR calculator' },
+];
+
+const refs = [
+  { text: 'Kim-Dorner SJ, et al. Triglyceride/HDL ratio as a surrogate marker of insulin resistance. NCBI / PMC.', href: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8110426/' },
+  { text: 'Freeman AM, et al. Insulin Resistance. StatPearls, NCBI.', href: 'https://www.ncbi.nlm.nih.gov/books/NBK507839/' },
+  { text: 'Lipid Conversion Factors. NCBI Bookshelf.', href: 'https://www.ncbi.nlm.nih.gov/books/NBK83505/' },
+];
+---
+
+<ToolPage
+  title="Triglyceride to HDL Ratio Calculator"
+  description="Calculate your triglyceride to HDL ratio in mg/dL or mmol/L — one of the best insulin-resistance signals hidden in the lipid panel you already have."
+  short="Trig/HDL ratio"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="tg">Triglycerides</label>
+        <input id="tg" type="number" step="any" inputmode="decimal" placeholder="e.g. 130" />
+      </div>
+      <div class="field">
+        <label for="hdl">HDL cholesterol</label>
+        <input id="hdl" type="number" step="any" inputmode="decimal" placeholder="e.g. 50" />
+      </div>
+      <div class="field">
+        <label for="unit">Unit</label>
+        <select id="unit">
+          <option value="mgdl">mg/dL</option>
+          <option value="mmol">mmol/L</option>
+        </select>
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter triglycerides and HDL from the same lipid panel.</span>
+    </div>
+    <p class="hint">Thresholds differ by unit: roughly 2 and 3 in mg/dL correspond to roughly 0.87 and 1.3 in mmol/L.</p>
+  </div>
+
+  <h2>Why this ratio is worth two seconds of arithmetic</h2>
+  <p>
+    Insulin resistance pushes triglycerides up and HDL down simultaneously. Because the ratio has one
+    of those on top and the other on the bottom, it moves roughly twice as fast as either number alone
+    — which is why it can look clearly abnormal while both components are still inside their reference
+    ranges.
+  </p>
+  <p>
+    Research has found it performs well as a surrogate marker of insulin resistance, better than
+    triglycerides or HDL read separately. And unlike <a href="/tools/homa-ir-calculator/">HOMA-IR</a>,
+    it needs no insulin test — the two inputs are on every standard lipid panel you have ever had.
+  </p>
+
+  <h2>How to read it</h2>
+  <table>
+    <thead>
+      <tr><th>Ratio (mg/dL)</th><th>Ratio (mmol/L)</th><th>Usual interpretation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Below 2</td><td>Below 0.87</td><td>Generally reassuring</td></tr>
+      <tr><td>2 – 3</td><td>0.87 – 1.3</td><td>Borderline; worth watching</td></tr>
+      <tr><td>Above 3</td><td>Above 1.3</td><td>Commonly flagged as suggestive of insulin resistance</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Published thresholds land anywhere from about 1.5 to 3.0 in mg/dL depending on the population
+    studied, so this is a signal to investigate rather than a diagnosis. Ratios also run differently
+    across ethnic groups, which is one reason no single cutoff has become universal.
+  </p>
+
+  <h2>The unit trap</h2>
+  <p>
+    This is the mistake worth guarding against. Triglycerides convert at 88.57 and cholesterol at
+    38.67, so the ratio does <em>not</em> survive a unit change — a ratio of 3.0 calculated in mg/dL
+    becomes about 1.3 in mmol/L. Anyone comparing an mmol/L ratio against the familiar mg/dL
+    thresholds will conclude they are fine when they may not be. If your panel is in mmol/L, use the
+    mmol/L column above, or convert first with the
+    <a href="/tools/mgdl-mmoll-converter/">mg/dL to mmol/L converter</a>.
+  </p>
+
+  <h2>What to do with a raised ratio</h2>
+  <ol>
+    <li><strong>Look at the whole metabolic picture</strong> — HbA1c, fasting glucose, waist circumference. A raised ratio rarely travels alone.</li>
+    <li><strong>Ask for fasting insulin</strong> if you want to confirm it, then calculate <a href="/tools/homa-ir-calculator/">HOMA-IR</a>.</li>
+    <li><strong>Check non-HDL too</strong> — the <a href="/tools/non-hdl-cholesterol-calculator/">non-HDL calculator</a> uses the same panel and answers a different question.</li>
+    <li><strong>Track it over time.</strong> The ratio responds to change faster than HbA1c does, which makes it a useful short-interval marker.</li>
+    <li><strong>Talk to a clinician</strong> about interpreting it against your overall cardiovascular and metabolic risk.</li>
+  </ol>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const tg = document.getElementById('tg');
+    const hdl = document.getElementById('hdl');
+    const unit = document.getElementById('unit');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+
+    // mg/dL cutoffs 2 and 3 expressed in mmol/L: (x / 88.57) / (1 / 38.67) = x * 0.4366
+    const CUT = { mgdl: [2, 3], mmol: [0.87, 1.31] };
+
+    function run() {
+      out.classList.remove('ok', 'warn');
+      const t = parseFloat(tg.value);
+      const h = parseFloat(hdl.value);
+      if (!tg.value || !hdl.value || isNaN(t) || isNaN(h) || t <= 0 || h <= 0) {
+        big.textContent = '—';
+        note.textContent = 'Enter triglycerides and HDL from the same lipid panel.';
+        return;
+      }
+
+      const ratio = t / h;
+      const [good, bad] = CUT[unit.value];
+      const u = unit.value === 'mmol' ? 'mmol/L' : 'mg/dL';
+
+      let label, cls;
+      if (ratio < good) { label = 'Generally reassuring.'; cls = 'ok'; }
+      else if (ratio < bad) { label = 'Borderline — worth watching alongside your other metabolic markers.'; cls = 'warn'; }
+      else { label = 'Commonly read as suggestive of insulin resistance.'; cls = 'warn'; }
+
+      big.textContent = ratio.toFixed(2);
+      note.textContent = t + ' ÷ ' + h + ' = ' + ratio.toFixed(2) + ' (both in ' + u + '). ' + label +
+        ' Thresholds for ' + u + ': ' + good + ' and ' + bad + '.';
+      out.classList.add(cls);
+    }
+
+    [tg, hdl, unit].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+
+    unit.addEventListener('change', function () {
+      const isMmol = unit.value === 'mmol';
+      tg.placeholder = isMmol ? 'e.g. 1.5' : 'e.g. 130';
+      hdl.placeholder = isMmol ? 'e.g. 1.3' : 'e.g. 50';
+    });
+  })();
+</script>

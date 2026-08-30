@@ -1,0 +1,192 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'How do I convert mg/dL to mmol/L?',
+    a: 'Divide by a factor that depends on the substance, because the conversion is based on molecular weight. Glucose: divide mg/dL by 18.0182. Total, LDL and HDL cholesterol: divide by 38.67. Triglycerides: divide by 88.57. There is no single universal factor — using the glucose factor on a cholesterol result gives a badly wrong answer.',
+  },
+  {
+    q: 'Why do glucose and cholesterol use different conversion factors?',
+    a: 'Because mg/dL measures mass and mmol/L measures the number of molecules. Converting between them requires the molecular weight of the specific substance. Glucose is about 180 g/mol, cholesterol about 387, and triglycerides (as triolein) about 886 — which is why the three factors differ so much.',
+  },
+  {
+    q: 'Which countries use mmol/L and which use mg/dL?',
+    a: 'The United States reports in mg/dL for glucose and lipids. Most of Europe, the UK, Canada, Australia and China report in mmol/L. This is why the same result can look completely unfamiliar depending on which lab produced it, and why comparing a US report to a European one requires converting first.',
+  },
+  {
+    q: 'Is a glucose of 100 mg/dL the same as 5.6 mmol/L?',
+    a: 'Yes. 100 divided by 18.0182 gives 5.55 mmol/L, usually reported as 5.6. That value sits right at the boundary where many guidelines begin calling fasting glucose impaired, which is a useful thing to recognise in either unit.',
+  },
+];
+
+const related = [
+  { href: '/blog/hba1c-explained/', text: 'HbA1c explained: your 3-month blood sugar snapshot' },
+  { href: '/blog/cholesterol-numbers-explained/', text: 'What your cholesterol numbers actually mean' },
+  { href: '/blog/how-to-read-blood-test-results/', text: 'How to read blood test results without a medical degree' },
+  { href: '/tools/hba1c-to-glucose/', text: 'HbA1c to average glucose converter' },
+];
+
+const refs = [
+  { text: 'Lipid Conversion Factors. NCBI Bookshelf.', href: 'https://www.ncbi.nlm.nih.gov/books/NBK83505/' },
+  { text: 'NGSP. HbA1c and Estimated Average Glucose (eAG).', href: 'https://ngsp.org/A1ceAG.asp' },
+  { text: 'National Institute of Diabetes and Digestive and Kidney Diseases. Diabetes Tests & Diagnosis.', href: 'https://www.niddk.nih.gov/health-information/diabetes/overview/tests-diagnosis' },
+];
+---
+
+<ToolPage
+  title="mg/dL to mmol/L Converter"
+  description="Convert glucose, cholesterol, triglycerides and more between mg/dL and mmol/L. Each substance has its own factor, and this applies the right one."
+  short="mg/dL ↔ mmol/L"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="analyte">What are you converting?</label>
+        <select id="analyte">
+          <option value="18.0182" data-name="Glucose">Glucose</option>
+          <option value="38.67" data-name="Total cholesterol">Total cholesterol</option>
+          <option value="38.67" data-name="LDL cholesterol">LDL cholesterol</option>
+          <option value="38.67" data-name="HDL cholesterol">HDL cholesterol</option>
+          <option value="88.57" data-name="Triglycerides">Triglycerides</option>
+          <option value="0.0113" data-name="Creatinine" data-mult="true">Creatinine (µmol/L)</option>
+          <option value="59.48" data-name="Uric acid">Uric acid</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="direction">Direction</label>
+        <select id="direction">
+          <option value="to-mmol">mg/dL → mmol/L</option>
+          <option value="to-mgdl">mmol/L → mg/dL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="val">Your value</label>
+        <input id="val" type="number" step="any" inputmode="decimal" placeholder="e.g. 100" />
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter a value to convert.</span>
+    </div>
+    <p class="hint">Creatinine is reported in µmol/L rather than mmol/L, so it uses its own factor of 88.4.</p>
+  </div>
+
+  <h2>The factors this tool uses</h2>
+  <p>
+    There is no single number that converts mg/dL to mmol/L. mg/dL measures <em>mass</em> per volume
+    and mmol/L measures the <em>number of molecules</em> per volume, so the conversion depends on how
+    heavy the molecule is. That is why the factors below differ by nearly fiftyfold.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Substance</th><th>mg/dL → mmol/L</th><th>mmol/L → mg/dL</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Glucose</td><td>÷ 18.0182</td><td>× 18.0182</td></tr>
+      <tr><td>Total / LDL / HDL cholesterol</td><td>÷ 38.67</td><td>× 38.67</td></tr>
+      <tr><td>Triglycerides</td><td>÷ 88.57</td><td>× 88.57</td></tr>
+      <tr><td>Uric acid</td><td>÷ 59.48 (to mmol/L)</td><td>× 59.48</td></tr>
+      <tr><td>Creatinine</td><td>× 88.4 (to µmol/L)</td><td>÷ 88.4</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The mistake worth avoiding</h2>
+  <p>
+    Applying the glucose factor to a cholesterol result is the single most common error, and it is not
+    a small one. An LDL of 130 mg/dL is 3.4 mmol/L. Divide it by 18 instead and you get 7.2 — a number
+    that looks alarming and means nothing. If you take one thing from this page: check which substance
+    you are converting before you divide.
+  </p>
+
+  <h2>Familiar landmarks in both units</h2>
+  <p>Handy for sanity-checking a converted result:</p>
+  <ul>
+    <li><strong>Fasting glucose</strong> — 100 mg/dL = 5.6 mmol/L (the impaired-fasting-glucose boundary in many guidelines)</li>
+    <li><strong>Fasting glucose</strong> — 126 mg/dL = 7.0 mmol/L (the usual diabetes diagnostic threshold)</li>
+    <li><strong>LDL cholesterol</strong> — 100 mg/dL = 2.6 mmol/L, 70 mg/dL = 1.8 mmol/L</li>
+    <li><strong>Triglycerides</strong> — 150 mg/dL = 1.7 mmol/L, 200 mg/dL = 2.3 mmol/L</li>
+    <li><strong>Non-HDL cholesterol</strong> — 130 mg/dL = 3.4 mmol/L</li>
+  </ul>
+
+  <h2>Why this comes up so often</h2>
+  <p>
+    Reference ranges are printed in whatever unit the laboratory uses, and people increasingly hold
+    results from more than one country: a US panel from a work checkup, a European one from a holiday
+    clinic, an old report from before they moved. Comparing those without converting produces
+    conclusions that are simply arithmetic errors — which is a shame, because the comparison across
+    years is the most useful thing you can do with lab results.
+  </p>
+  <p>
+    Unit mismatches are also why a single number is a weak object to reason about. What actually tells
+    you something is the same marker measured repeatedly, in a consistent unit, over time. That is the
+    part a converter cannot do for you.
+  </p>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const analyte = document.getElementById('analyte');
+    const direction = document.getElementById('direction');
+    const val = document.getElementById('val');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+
+    function fmt(n) {
+      if (!isFinite(n)) return '—';
+      const abs = Math.abs(n);
+      const dp = abs >= 100 ? 0 : abs >= 10 ? 1 : 2;
+      return n.toFixed(dp);
+    }
+
+    function run() {
+      const opt = analyte.options[analyte.selectedIndex];
+      const name = opt.getAttribute('data-name');
+      const isCreatinine = opt.getAttribute('data-mult') === 'true';
+      const factor = isCreatinine ? 88.4 : parseFloat(opt.value);
+      const targetUnit = isCreatinine ? 'µmol/L' : 'mmol/L';
+      const v = parseFloat(val.value);
+
+      out.classList.remove('ok', 'warn');
+      if (!val.value || isNaN(v) || v < 0) {
+        big.textContent = '—';
+        note.textContent = 'Enter a value to convert.';
+        return;
+      }
+
+      let result, from, to;
+      if (direction.value === 'to-mmol') {
+        result = isCreatinine ? v * factor : v / factor;
+        from = 'mg/dL';
+        to = targetUnit;
+      } else {
+        result = isCreatinine ? v / factor : v * factor;
+        from = targetUnit;
+        to = 'mg/dL';
+      }
+
+      big.textContent = fmt(result) + ' ' + to;
+      note.textContent = name + ': ' + v + ' ' + from + ' = ' + fmt(result) + ' ' + to +
+        ' (factor ' + factor + ')';
+      out.classList.add('ok');
+    }
+
+    [analyte, direction, val].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+
+    // Reflect the unit choice in the direction labels so the pair always matches the analyte.
+    analyte.addEventListener('change', function () {
+      const isCreatinine = analyte.options[analyte.selectedIndex].getAttribute('data-mult') === 'true';
+      const unit = isCreatinine ? 'µmol/L' : 'mmol/L';
+      direction.options[0].textContent = 'mg/dL → ' + unit;
+      direction.options[1].textContent = unit + ' → mg/dL';
+    });
+  })();
+</script>

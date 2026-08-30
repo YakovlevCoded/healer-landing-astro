@@ -1,0 +1,177 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'How is HOMA-IR calculated?',
+    a: 'With glucose in mg/dL: HOMA-IR = (fasting insulin in µIU/mL × fasting glucose in mg/dL) ÷ 405. With glucose in mmol/L the divisor is 22.5 instead. Both need a genuinely fasting blood draw, and both values must come from the same sample.',
+  },
+  {
+    q: 'What is a normal HOMA-IR?',
+    a: 'Commonly used cutoffs place insulin resistance somewhere above 2.0 to 2.5, and a large laboratory-database analysis proposed a reference interval of roughly 0.4 to 2.9. There is no single official threshold, partly because insulin assays were never standardised between laboratories, and partly because the cutoff shifts with age, sex and ethnicity.',
+  },
+  {
+    q: 'Can HOMA-IR be high with normal glucose?',
+    a: 'Yes, and that is exactly what makes it useful. In early insulin resistance the body keeps glucose in range by producing more insulin, so glucose looks fine while insulin climbs. HOMA-IR captures that compensation, which is why it can flag a problem years before fasting glucose or HbA1c cross any threshold.',
+  },
+  {
+    q: 'Can I compare HOMA-IR results from two different labs?',
+    a: 'Not reliably. Insulin immunoassays from different manufacturers return meaningfully different values on the same sample, and HOMA-IR inherits that variability. Use the same laboratory each time and compare your result against your own previous results rather than against a number from elsewhere.',
+  },
+];
+
+const related = [
+  { href: '/blog/how-to-know-if-you-have-insulin-resistance/', text: 'How to know if you have insulin resistance' },
+  { href: '/blog/fasting-insulin-range/', text: 'Fasting insulin range: why every source disagrees' },
+  { href: '/blog/fasting-insulin-test-guide/', text: 'Fasting insulin: the test your doctor probably skips' },
+  { href: '/tools/triglyceride-hdl-ratio-calculator/', text: 'Triglyceride-to-HDL ratio calculator' },
+];
+
+const refs = [
+  { text: 'Freeman AM, et al. Insulin Resistance. StatPearls, NCBI.', href: 'https://www.ncbi.nlm.nih.gov/books/NBK507839/' },
+  { text: 'Proposal for fasting insulin and HOMA-IR reference intervals based on an extensive laboratory database. PMC.', href: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11554367/' },
+  { text: 'Manley SE, et al. Comparison of 11 Human Insulin Assays. Clinical Chemistry.', href: 'https://pubmed.ncbi.nlm.nih.gov/17363420/' },
+  { text: 'National Institute of Diabetes and Digestive and Kidney Diseases. Insulin Resistance & Prediabetes.', href: 'https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/prediabetes-insulin-resistance' },
+];
+---
+
+<ToolPage
+  title="HOMA-IR Calculator"
+  description="Calculate HOMA-IR from fasting insulin and glucose in mg/dL or mmol/L, and see why a high HOMA-IR with normal glucose is the genuinely useful case."
+  short="HOMA-IR"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="ins">Fasting insulin (µIU/mL)</label>
+        <input id="ins" type="number" step="any" inputmode="decimal" placeholder="e.g. 8.4" />
+      </div>
+      <div class="field">
+        <label for="glu">Fasting glucose</label>
+        <input id="glu" type="number" step="any" inputmode="decimal" placeholder="e.g. 92" />
+      </div>
+      <div class="field">
+        <label for="gunit">Glucose unit</label>
+        <select id="gunit">
+          <option value="mgdl">mg/dL</option>
+          <option value="mmol">mmol/L</option>
+        </select>
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter fasting insulin and glucose from the same blood draw.</span>
+    </div>
+    <p class="hint">Both values must come from the same fasting sample, typically after 8–12 hours without food.</p>
+  </div>
+
+  <h2>The formula</h2>
+  <ul>
+    <li><strong>mg/dL:</strong> HOMA-IR = (fasting insulin × fasting glucose) ÷ 405</li>
+    <li><strong>mmol/L:</strong> HOMA-IR = (fasting insulin × fasting glucose) ÷ 22.5</li>
+  </ul>
+  <p>
+    Insulin is in µIU/mL in both versions. The two divisors exist only because of the glucose unit —
+    they describe the same calculation.
+  </p>
+
+  <h2>How to read your score</h2>
+  <table>
+    <thead>
+      <tr><th>HOMA-IR</th><th>Usual interpretation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Below 1.0</td><td>High insulin sensitivity</td></tr>
+      <tr><td>1.0 – 1.9</td><td>Generally considered healthy</td></tr>
+      <tr><td>2.0 – 2.9</td><td>Borderline; many clinicians treat this as early insulin resistance</td></tr>
+      <tr><td>3.0 and above</td><td>Consistent with significant insulin resistance</td></tr>
+    </tbody>
+  </table>
+  <p>
+    These bands are working conventions rather than diagnostic criteria. No medical body has defined an
+    official HOMA-IR cutoff, and the reason is worth understanding: insulin immunoassays were never
+    standardised against a common reference, so the same sample returns different insulin values at
+    different laboratories. HOMA-IR inherits that spread. We wrote about this in detail in
+    <a href="/blog/fasting-insulin-range/">why every source gives a different fasting insulin range</a>.
+  </p>
+
+  <h2>Why a ratio beats a single number</h2>
+  <p>
+    HOMA-IR pairs insulin with glucose from the same sample, so it describes a <em>relationship</em>
+    rather than an absolute quantity: how much insulin your body is spending to hold glucose where it
+    is. That framing is what makes it informative when both inputs look individually unremarkable.
+  </p>
+  <p>
+    The clinically interesting case is a normal glucose with a raised HOMA-IR. Glucose stays in range
+    precisely because insulin has risen to keep it there — so standard screening, which measures
+    glucose and HbA1c, sees nothing. Insulin resistance can build for a decade or more before those
+    lagging markers move, which is the window HOMA-IR opens.
+  </p>
+
+  <h2>What to do with the result</h2>
+  <ol>
+    <li><strong>Check it against your own history</strong>, from the same laboratory, rather than against an internet cutoff.</li>
+    <li><strong>Look at it beside the rest of the picture</strong> — HbA1c, triglycerides, HDL, waist circumference. Insulin resistance rarely travels alone.</li>
+    <li><strong>Try the free surrogate too.</strong> The <a href="/tools/triglyceride-hdl-ratio-calculator/">triglyceride-to-HDL ratio</a> needs no insulin test at all and tracks the same underlying problem.</li>
+    <li><strong>Re-test after changes at around three months</strong>, which is roughly when a real shift becomes visible.</li>
+    <li><strong>Discuss it with a clinician</strong>, especially alongside a rising HbA1c or family history of diabetes.</li>
+  </ol>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const ins = document.getElementById('ins');
+    const glu = document.getElementById('glu');
+    const gunit = document.getElementById('gunit');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+
+    function band(v) {
+      if (v < 1) return ['High insulin sensitivity.', 'ok'];
+      if (v < 2) return ['Generally considered a healthy range.', 'ok'];
+      if (v < 3) return ['Borderline — often read as early insulin resistance.', 'warn'];
+      return ['Consistent with significant insulin resistance.', 'warn'];
+    }
+
+    function run() {
+      out.classList.remove('ok', 'warn');
+      const i = parseFloat(ins.value);
+      const g = parseFloat(glu.value);
+      if (!ins.value || !glu.value || isNaN(i) || isNaN(g) || i <= 0 || g <= 0) {
+        big.textContent = '—';
+        note.textContent = 'Enter fasting insulin and glucose from the same blood draw.';
+        return;
+      }
+
+      const divisor = gunit.value === 'mmol' ? 22.5 : 405;
+      const homa = (i * g) / divisor;
+
+      if (!isFinite(homa) || homa > 100) {
+        big.textContent = '—';
+        note.textContent = 'That result looks implausible — check the glucose unit you selected.';
+        out.classList.add('warn');
+        return;
+      }
+
+      const [label, cls] = band(homa);
+      big.textContent = 'HOMA-IR ' + homa.toFixed(2);
+      const unitLabel = gunit.value === 'mmol' ? 'mmol/L' : 'mg/dL';
+      note.textContent = '(' + i + ' µIU/mL × ' + g + ' ' + unitLabel + ') ÷ ' + divisor + ' = ' +
+        homa.toFixed(2) + '. ' + label;
+      out.classList.add(cls);
+    }
+
+    [ins, glu, gunit].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+
+    gunit.addEventListener('change', function () {
+      glu.placeholder = gunit.value === 'mmol' ? 'e.g. 5.1' : 'e.g. 92';
+    });
+  })();
+</script>

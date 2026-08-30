@@ -1,0 +1,166 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'Is a ferritin of 25 low?',
+    a: 'It is inside most laboratory reference ranges, which often start as low as 12, but below the level many clinicians treat as adequate. A cutoff of 30 ng/mL is about 92% sensitive and 98% specific for iron deficiency, so a ferritin of 25 alongside fatigue, hair shedding or breathlessness is worth discussing rather than dismissing.',
+  },
+  {
+    q: 'What is the difference between normal and optimal ferritin?',
+    a: 'Normal is a statistical description of the population the laboratory sampled — a range that includes people with undiagnosed iron deficiency. Optimal is a clinical judgement about the level at which most people feel and function well, usually placed around 30 to 100 ng/mL. The gap between the two is where a great many symptomatic people sit while being told their result is fine.',
+  },
+  {
+    q: 'Is ng/mL the same as µg/L for ferritin?',
+    a: 'Yes, exactly the same. One nanogram per millilitre equals one microgram per litre, so a ferritin of 30 ng/mL and 30 µg/L are identical values. Unlike glucose or cholesterol, ferritin needs no unit conversion — only the label changes between laboratories.',
+  },
+  {
+    q: 'Can ferritin be normal and iron still be low?',
+    a: 'Yes. Ferritin is an acute-phase reactant, meaning inflammation, infection and liver disease push it up independently of iron stores. Someone with both inflammation and iron deficiency can show a deceptively normal ferritin, which is why a full iron panel with transferrin saturation and CRP is the more complete picture.',
+  },
+];
+
+const related = [
+  { href: '/blog/ferritin-levels-chart/', text: "Ferritin levels chart: what's normal vs what's optimal" },
+  { href: '/blog/low-ferritin-guide/', text: 'What does low ferritin actually mean?' },
+  { href: '/blog/full-iron-panel/', text: 'The full iron panel: beyond ferritin' },
+  { href: '/blog/iron-deficiency-vs-low-ferritin/', text: 'Iron deficiency vs low ferritin vs anemia' },
+];
+
+const refs = [
+  { text: 'Short MW, Domagalski JE. Iron Deficiency Anemia: Evaluation and Management. American Family Physician.', href: 'https://www.aafp.org/pubs/afp/issues/2013/0115/p98.html' },
+  { text: 'World Health Organization. WHO guideline on use of ferritin concentrations to assess iron status. NCBI.', href: 'https://www.ncbi.nlm.nih.gov/books/NBK569877/' },
+  { text: 'National Institutes of Health, Office of Dietary Supplements. Iron — Health Professional Fact Sheet.', href: 'https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/' },
+];
+---
+
+<ToolPage
+  title="Ferritin Level Checker: Normal vs Optimal"
+  description="Enter your ferritin and see where it sits between the lab's normal range and the level clinicians call optimal. The gap between the two is where symptoms hide."
+  short="Ferritin checker"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="val">Your ferritin (ng/mL or µg/L — same thing)</label>
+        <input id="val" type="number" step="any" inputmode="decimal" placeholder="e.g. 25" />
+      </div>
+      <div class="field">
+        <label for="sex">Sex</label>
+        <select id="sex">
+          <option value="f">Female</option>
+          <option value="m">Male</option>
+        </select>
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter your ferritin to see where it falls.</span>
+    </div>
+    <p class="hint">Ferritin rises with inflammation, so a normal value doesn't fully rule out low iron. A full iron panel with transferrin saturation and CRP gives the complete picture.</p>
+  </div>
+
+  <h2>Why one number gets two different answers</h2>
+  <p>
+    A ferritin of 25 is the clearest example in all of blood work of the difference between
+    <em>normal</em> and <em>adequate</em>.
+  </p>
+  <p>
+    Laboratory reference ranges commonly start at 12 or 15 ng/mL. Those floors come from the
+    statistical distribution of whoever the lab sampled — a population that included plenty of people
+    with undiagnosed iron deficiency. Being inside the range means you are not in the bottom few
+    percent of that group. It does not mean you have enough iron.
+  </p>
+  <p>
+    Against that, a cutoff of <strong>30 ng/mL</strong> is roughly 92% sensitive and 98% specific for
+    iron deficiency. The World Health Organization reserves 15 ng/mL for outright depletion. So there
+    is a wide band — roughly 12 to 30 — where the report says normal and the clinical literature says
+    deficient.
+  </p>
+
+  <h2>The bands this tool uses</h2>
+  <table>
+    <thead>
+      <tr><th>Ferritin (ng/mL)</th><th>Status</th><th>What it usually means</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Below 15</td><td>Depleted</td><td>WHO threshold for outright iron depletion</td></tr>
+      <tr><td>15 – 30</td><td>Functionally low</td><td>Often labelled normal; symptoms are common here</td></tr>
+      <tr><td>30 – 100</td><td>Optimal</td><td>The comfortable range for most adults</td></tr>
+      <tr><td>100 – 200</td><td>Normal-high</td><td>Fine; worth noting if trending upward</td></tr>
+      <tr><td>200 – 300</td><td>High</td><td>May reflect inflammation, liver issues or iron loading</td></tr>
+      <tr><td>Above 300</td><td>Elevated</td><td>Warrants investigation</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The catch that cuts the other way</h2>
+  <p>
+    Ferritin is an acute-phase reactant: inflammation, infection, liver disease and obesity all raise
+    it regardless of how much iron you have stored. That means a normal ferritin can mask a real
+    deficiency when inflammation is present — the two effects cancel out on the report.
+  </p>
+  <p>
+    This is why ferritin alone is an incomplete test. Transferrin saturation stays low in deficiency
+    even when inflammation lifts ferritin, and CRP tells you whether inflammation is in play at all.
+    The <a href="/blog/full-iron-panel/">full iron panel</a> covers both.
+  </p>
+
+  <h2>What to do next</h2>
+  <ol>
+    <li><strong>Compare against your own history</strong>, not just the range. A slide from 70 to 40 to 25 is the finding, even though every one of those was reported as normal.</li>
+    <li><strong>Ask for the full panel</strong> — serum iron, TIBC, transferrin saturation, plus CRP to check for inflammation.</li>
+    <li><strong>Don't self-supplement on a single reading.</strong> Iron overload is a real risk and the treatment differs by cause.</li>
+    <li><strong>Bring symptoms with you.</strong> Fatigue, hair shedding, breathlessness on stairs and restless legs are the ones most often dismissed at a borderline ferritin.</li>
+    <li><strong>Talk to a clinician</strong> if you are below 30 with symptoms, or above 300 at all.</li>
+  </ol>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const val = document.getElementById('val');
+    const sex = document.getElementById('sex');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+
+    function assess(v) {
+      if (v < 15) return ['Depleted', 'Below the WHO threshold for iron depletion. Some laboratory ranges start lower still, which is how a result like this ends up reported as normal.', 'warn'];
+      if (v < 30) return ['Functionally low', 'Most labs report this as normal, but 30 ng/mL is about 92% sensitive and 98% specific for iron deficiency — so this band is where symptoms commonly sit while the report says fine.', 'warn'];
+      if (v < 100) return ['Optimal', 'This is the range most clinicians are comfortable with for adults.', 'ok'];
+      if (v < 200) return ['Normal-high', 'No concern on its own. Worth noting if it has been climbing across tests.', 'ok'];
+      if (v <= 300) return ['High', 'May reflect inflammation, liver issues or iron loading rather than good iron status.', 'warn'];
+      return ['Elevated', 'Above the usual reference ceiling — this warrants investigation, including inflammation and iron overload.', 'warn'];
+    }
+
+    function run() {
+      out.classList.remove('ok', 'warn');
+      const v = parseFloat(val.value);
+      if (!val.value || isNaN(v) || v < 0) {
+        big.textContent = '—';
+        note.textContent = 'Enter your ferritin to see where it falls.';
+        return;
+      }
+
+      const [label, explain, cls] = assess(v);
+      const labFloor = sex.value === 'm' ? 24 : 11;
+      // The note earns its place only in the 15-30 band, where "normal on the report" and
+      // "deficient in the literature" genuinely collide. Below 15 the band text already says it.
+      const showNote = v >= 15 && v < 30 && v >= labFloor;
+
+      big.textContent = v + ' ng/mL — ' + label;
+      note.textContent = explain +
+        (showNote
+          ? ' A typical lab range for your sex starts around ' + labFloor + ', so this value is printed as normal.'
+          : '');
+      out.classList.add(cls);
+    }
+
+    [val, sex].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+  })();
+</script>

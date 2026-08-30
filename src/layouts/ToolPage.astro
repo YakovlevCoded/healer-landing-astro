@@ -1,0 +1,193 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface FaqItem { q: string; a: string; }
+interface Props {
+  /** Exact-match keyword phrase, front-loaded. Shown as h1 and in <title>. */
+  title: string;
+  /** 140-160 chars, includes the keyword. */
+  description: string;
+  /** Short label for breadcrumbs. */
+  short: string;
+  faq?: FaqItem[];
+  related?: { href: string; text: string }[];
+  refs?: { text: string; href: string }[];
+}
+
+const { title, description, short, faq = [], related = [], refs = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: title,
+    description,
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'Any',
+    url: canonical,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@type': 'Organization', name: 'Bevita', url: 'https://bevita.app' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: new URL('/tools/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: short, item: canonical },
+    ],
+  },
+  ...(faq.length
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      }]
+    : []),
+];
+---
+
+<BaseLayout title={`${title} | Bevita`} description={description} schemas={schemas} image="/images/bevita-insulin-resistance-screen.jpg">
+  <article class="tool">
+    <header class="tool-head">
+      <div class="shell">
+        <a href="/tools/" class="back">← All free tools</a>
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+      </div>
+    </header>
+
+    <div class="calc shell">
+      <slot name="calculator" />
+    </div>
+
+    <div class="body shell">
+      <slot />
+
+      {related.length > 0 && (
+        <>
+          <h2>Read more</h2>
+          <ul>
+            {related.map((r) => <li><a href={r.href}>{r.text}</a></li>)}
+          </ul>
+        </>
+      )}
+
+      {refs.length > 0 && (
+        <>
+          <h2>References</h2>
+          <ol>
+            {refs.map((r) => <li><a href={r.href} target="_blank" rel="noopener noreferrer">{r.text}</a></li>)}
+          </ol>
+        </>
+      )}
+
+      <p class="disclaimer">
+        This tool is for education and isn't medical advice. Reference ranges vary between
+        laboratories — check the range printed on your own report, and discuss your results with a
+        qualified clinician.
+      </p>
+    </div>
+
+    {faq.length > 0 && (
+      <section class="faq shell">
+        <h2>Frequently asked questions</h2>
+        <dl>
+          {faq.map((f) => (
+            <div class="faq-item">
+              <dt>{f.q}</dt>
+              <dd>{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    <div class="cta shell">
+      <div class="cta-box">
+        <h3>Stop calculating, start tracking</h3>
+        <p>
+          A calculator answers today's question. Bevita reads your lab PDFs, keeps every value with
+          its date, and shows what each marker has been doing over time. Free to start, iOS.
+        </p>
+        <a href="https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563" class="badge">Download on the App Store</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .shell { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .tool-head { padding: 120px 0 32px; }
+  .back { display: inline-block; font-size: 14px; color: var(--ink-3); margin-bottom: 24px; }
+  .back:hover { color: var(--forest); }
+  .tool-head h1 { margin-bottom: 12px; }
+  .lede { font-size: 20px; color: var(--ink-2); max-width: 54ch; }
+
+  .calc { padding-block: 8px 8px; }
+  .calc :global(.panel) {
+    background: var(--card); border: 1px solid var(--line-strong); border-radius: 16px;
+    padding: 28px; box-shadow: var(--shadow-soft);
+  }
+  .calc :global(.row) { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+  .calc :global(.field) { flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; }
+  .calc :global(label) { font-size: 14px; color: var(--ink-2); font-weight: 500; }
+  .calc :global(input), .calc :global(select) {
+    padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line-strong);
+    background: var(--paper); font-size: 17px; font-family: inherit; color: var(--ink);
+    width: 100%;
+  }
+  .calc :global(input:focus), .calc :global(select:focus) {
+    outline: 2px solid var(--forest); outline-offset: 1px; border-color: var(--forest);
+  }
+  .calc :global(.out) {
+    margin-top: 8px; padding: 20px; border-radius: 12px;
+    background: var(--forest-soft); border: 1px solid var(--forest);
+  }
+  .calc :global(.out .big) {
+    font-family: var(--serif); font-size: clamp(30px, 6vw, 44px); line-height: 1.05;
+    color: var(--forest); display: block;
+  }
+  .calc :global(.out .note) { font-size: 15px; color: var(--ink-2); margin-top: 8px; display: block; }
+  .calc :global(.out.warn) { background: var(--st-concerning-bg); border-color: var(--st-concerning); }
+  .calc :global(.out.warn .big) { color: var(--st-concerning); }
+  .calc :global(.out.ok) { background: var(--st-optimal-bg); border-color: var(--st-optimal); }
+  .calc :global(.out.ok .big) { color: var(--st-optimal); }
+  .calc :global(.hint) { font-size: 14px; color: var(--ink-3); margin-top: 12px; }
+
+  .body { padding-block: 40px 64px; }
+  .body :global(h2) { margin-top: 48px; margin-bottom: 16px; }
+  .body :global(h3) { margin-top: 32px; margin-bottom: 12px; }
+  .body :global(p) { margin-bottom: 16px; max-width: 65ch; }
+  .body :global(ul), .body :global(ol) { margin-bottom: 16px; padding-left: 24px; }
+  .body :global(li) { margin-bottom: 8px; color: var(--ink-2); font-size: 17px; }
+  .body :global(a) { color: var(--forest); font-weight: 500; }
+  .body :global(a:hover) { text-decoration: underline; }
+  .body :global(table) { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 16px; }
+  .body :global(th), .body :global(td) { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .body :global(th) { color: var(--ink-3); font-weight: 500; }
+  .disclaimer { font-style: italic; color: var(--ink-3); font-size: 15px; margin-top: 32px; }
+
+  .faq { padding-block: 0 56px; }
+  .faq h2 { margin-bottom: 24px; }
+  .faq-item { border-top: 1px solid var(--line); padding: 20px 0; }
+  .faq-item dt { font-weight: 600; font-size: 18px; margin-bottom: 8px; }
+  .faq-item dd { margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.6; }
+
+  .cta { padding-block: 0 96px; }
+  .cta-box {
+    background: var(--tinted); border: 1px solid var(--line); border-radius: 16px;
+    padding: 32px; text-align: center;
+  }
+  .cta-box h3 { margin-bottom: 8px; }
+  .cta-box p { margin: 0 auto 20px; color: var(--ink-2); font-size: 16px; max-width: 46ch; }
+  .badge {
+    display: inline-block; padding: 10px 20px; border-radius: 10px;
+    background: var(--ink); color: var(--on-brand); font-size: 13px; font-weight: 500;
+  }
+</style>

@@ -1,0 +1,174 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'How do you convert HbA1c to average glucose?',
+    a: 'Using the ADAG equation from the 2008 study by Nathan and colleagues: estimated average glucose in mg/dL equals 28.7 multiplied by your HbA1c percentage, minus 46.7. For mmol/L, divide that result by 18.0182. An HbA1c of 6.0% works out to roughly 126 mg/dL, or 7.0 mmol/L.',
+  },
+  {
+    q: 'What is eAG?',
+    a: 'eAG stands for estimated average glucose. It expresses your HbA1c in the same units as a glucose meter reading, which makes it easier to relate a lab percentage to the numbers you see day to day. It is an estimate derived from a regression equation, not a measurement.',
+  },
+  {
+    q: 'What is the difference between NGSP % and IFCC mmol/mol?',
+    a: 'They are two reporting standards for the same measurement. The US and many other countries report HbA1c as a percentage (NGSP); much of Europe reports mmol/mol (IFCC). The conversion is IFCC = (NGSP − 2.15) × 10.929, so an HbA1c of 6.5% equals about 48 mmol/mol.',
+  },
+  {
+    q: 'Why does my glucose meter average not match my eAG?',
+    a: 'Several reasons. Meter averages usually over-sample daytime and post-meal readings while HbA1c reflects a true 24-hour average across about three months. HbA1c also depends on red blood cell lifespan, so anaemia, iron deficiency, recent blood loss, pregnancy and some haemoglobin variants can shift it independently of your actual glucose.',
+  },
+];
+
+const related = [
+  { href: '/blog/hba1c-explained/', text: 'HbA1c explained: your 3-month blood sugar snapshot' },
+  { href: '/blog/reversing-prediabetes/', text: 'Reversing prediabetes: what actually works' },
+  { href: '/blog/how-to-know-if-you-have-insulin-resistance/', text: 'How to know if you have insulin resistance' },
+  { href: '/tools/homa-ir-calculator/', text: 'HOMA-IR calculator' },
+];
+
+const refs = [
+  { text: 'Nathan DM, et al. Translating the A1C Assay Into Estimated Average Glucose Values. Diabetes Care, 2008.', href: 'https://diabetesjournals.org/care/article/31/8/1473/28589/Translating-the-A1C-Assay-Into-Estimated-Average' },
+  { text: 'NGSP. HbA1c and Estimated Average Glucose (eAG).', href: 'https://ngsp.org/A1ceAG.asp' },
+  { text: 'American Diabetes Association. Understanding A1C.', href: 'https://diabetes.org/about-diabetes/a1c' },
+  { text: 'Centers for Disease Control and Prevention. Diabetes Testing.', href: 'https://www.cdc.gov/diabetes/diabetes-testing/index.html' },
+];
+---
+
+<ToolPage
+  title="HbA1c to Average Glucose Calculator"
+  description="Convert HbA1c to estimated average glucose in mg/dL and mmol/L, plus IFCC mmol/mol, using the ADAG equation. See which diagnostic band your result falls in."
+  short="HbA1c → glucose"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="unit">Your HbA1c is reported as</label>
+        <select id="unit">
+          <option value="ngsp">Percent (NGSP) — e.g. 5.7%</option>
+          <option value="ifcc">mmol/mol (IFCC) — e.g. 39</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="a1c">Your HbA1c</label>
+        <input id="a1c" type="number" step="any" inputmode="decimal" placeholder="e.g. 5.7" />
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter your HbA1c to see the estimated average glucose.</span>
+    </div>
+    <p class="hint">Diagnostic bands: below 5.7% normal · 5.7–6.4% prediabetes · 6.5% and above diabetes (confirmed on two tests).</p>
+  </div>
+
+  <h2>The equation behind it</h2>
+  <p>
+    This converter uses the equation from the international ADAG study, which compared HbA1c against
+    continuous and repeated glucose measurements in several hundred people:
+  </p>
+  <ul>
+    <li><strong>eAG (mg/dL) = 28.7 × HbA1c% − 46.7</strong></li>
+    <li><strong>eAG (mmol/L) = eAG (mg/dL) ÷ 18.0182</strong></li>
+    <li><strong>IFCC (mmol/mol) = (NGSP% − 2.15) × 10.929</strong></li>
+  </ul>
+  <p>
+    The correlation in that study was strong but not perfect, so eAG is a well-grounded estimate rather
+    than a measurement. Treat it as a translation of the same information into more familiar units.
+  </p>
+
+  <h2>Reference table</h2>
+  <table>
+    <thead>
+      <tr><th>HbA1c</th><th>IFCC</th><th>eAG mg/dL</th><th>eAG mmol/L</th><th>Band</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5.0%</td><td>31</td><td>97</td><td>5.4</td><td>Normal</td></tr>
+      <tr><td>5.4%</td><td>36</td><td>108</td><td>6.0</td><td>Normal</td></tr>
+      <tr><td>5.7%</td><td>39</td><td>117</td><td>6.5</td><td>Prediabetes starts</td></tr>
+      <tr><td>6.0%</td><td>42</td><td>126</td><td>7.0</td><td>Prediabetes</td></tr>
+      <tr><td>6.5%</td><td>48</td><td>140</td><td>7.8</td><td>Diabetes threshold</td></tr>
+      <tr><td>7.0%</td><td>53</td><td>154</td><td>8.6</td><td>Common treatment target</td></tr>
+      <tr><td>8.0%</td><td>64</td><td>183</td><td>10.2</td><td>Above target</td></tr>
+      <tr><td>10.0%</td><td>86</td><td>240</td><td>13.3</td><td>Well above target</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What the number does and doesn't tell you</h2>
+  <p>
+    HbA1c earns its place because it smooths out daily noise: it reflects roughly three months of
+    average glucose rather than what you happened to eat this morning. That makes it the most useful
+    single blood-sugar marker, and it doesn't require fasting.
+  </p>
+  <p>
+    Two limitations are worth knowing. First, it is an average, so it hides swings — two people with
+    identical HbA1c can have very different day-to-day variability. Second, because it depends on red
+    blood cells living about three months, anything that changes their turnover shifts the result:
+    iron deficiency can push it up, recent blood loss or pregnancy can push it down, and some
+    haemoglobin variants interfere with the assay entirely.
+  </p>
+  <p>
+    There is also a blind spot the number cannot cover. HbA1c is a lagging signal — it moves after
+    glucose control has already drifted. <a href="/blog/fasting-insulin-test-guide/">Fasting insulin</a>
+    rises years earlier, which is why a normal HbA1c next to a raised
+    <a href="/tools/homa-ir-calculator/">HOMA-IR</a> is worth more attention than either value alone.
+  </p>
+
+  <h2>The trend matters more than the value</h2>
+  <p>
+    An HbA1c of 5.6% is technically normal. An HbA1c that went 5.1% → 5.4% → 5.6% over three years is
+    a trajectory, and the direction is the actionable part — while it is still easy to change. A single
+    conversion tells you where you are today; the series tells you where you're heading.
+  </p>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const unit = document.getElementById('unit');
+    const a1c = document.getElementById('a1c');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+
+    function band(pct) {
+      if (pct < 5.7) return ['Normal', 'ok'];
+      if (pct < 6.5) return ['Prediabetes range', 'warn'];
+      return ['Diabetes range (needs confirmation on a second test)', 'warn'];
+    }
+
+    function run() {
+      out.classList.remove('ok', 'warn');
+      const raw = parseFloat(a1c.value);
+      if (!a1c.value || isNaN(raw) || raw <= 0) {
+        big.textContent = '—';
+        note.textContent = 'Enter your HbA1c to see the estimated average glucose.';
+        return;
+      }
+
+      // Normalise to NGSP percent.
+      const pct = unit.value === 'ifcc' ? raw / 10.929 + 2.15 : raw;
+      const ifcc = (pct - 2.15) * 10.929;
+      const mgdl = 28.7 * pct - 46.7;
+      const mmol = mgdl / 18.0182;
+
+      if (pct < 3 || pct > 20) {
+        big.textContent = '—';
+        note.textContent = 'That looks outside the plausible range for HbA1c. Check the unit you selected.';
+        out.classList.add('warn');
+        return;
+      }
+
+      const [label, cls] = band(pct);
+      big.textContent = Math.round(mgdl) + ' mg/dL · ' + mmol.toFixed(1) + ' mmol/L';
+      note.textContent = 'HbA1c ' + pct.toFixed(1) + '% = ' + Math.round(ifcc) + ' mmol/mol (IFCC). ' + label + '.';
+      out.classList.add(cls);
+    }
+
+    [unit, a1c].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+  })();
+</script>

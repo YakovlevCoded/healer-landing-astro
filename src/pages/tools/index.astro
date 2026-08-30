@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Free Blood Test Calculators & Converters';
+const description =
+  'Free tools for reading your own lab results: unit converters, HbA1c to average glucose, HOMA-IR, non-HDL cholesterol, triglyceride ratio and a ferritin checker.';
+
+const tools = [
+  {
+    href: '/tools/mgdl-mmoll-converter/',
+    name: 'mg/dL to mmol/L converter',
+    blurb: 'Glucose, cholesterol, triglycerides, uric acid and creatinine. Each substance uses its own factor — this applies the right one.',
+  },
+  {
+    href: '/tools/hba1c-to-glucose/',
+    name: 'HbA1c to average glucose',
+    blurb: 'Convert HbA1c to estimated average glucose in mg/dL and mmol/L, plus IFCC mmol/mol, using the ADAG equation.',
+  },
+  {
+    href: '/tools/homa-ir-calculator/',
+    name: 'HOMA-IR calculator',
+    blurb: 'The insulin-resistance score from fasting insulin and glucose. Catches the compensation phase years before glucose moves.',
+  },
+  {
+    href: '/tools/triglyceride-hdl-ratio-calculator/',
+    name: 'Triglyceride to HDL ratio',
+    blurb: 'A free insulin-resistance signal hiding in any standard lipid panel. No extra test needed.',
+  },
+  {
+    href: '/tools/non-hdl-cholesterol-calculator/',
+    name: 'Non-HDL cholesterol calculator',
+    blurb: 'One subtraction that captures every artery-damaging particle, not just LDL — and stays reliable when triglycerides are high.',
+  },
+  {
+    href: '/tools/ferritin-level-checker/',
+    name: 'Ferritin checker: normal vs optimal',
+    blurb: "See where your ferritin sits between the lab's floor and the level clinicians call adequate. The gap is where symptoms hide.",
+  },
+];
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    hasPart: tools.map((t) => ({
+      '@type': 'WebApplication',
+      name: t.name,
+      description: t.blurb,
+      applicationCategory: 'HealthApplication',
+      url: new URL(t.href, Astro.site).toString(),
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: canonical },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${title} | Bevita`} description={description} schemas={schemas} image="/images/bevita-insulin-resistance-screen.jpg">
+  <article class="hub">
+    <header class="hub-head">
+      <div class="shell">
+        <h1>Free blood test tools</h1>
+        <p class="lede">
+          Six calculators for the questions a lab report leaves unanswered. No sign-up, no email, and
+          nothing leaves your browser — every calculation runs on your own device.
+        </p>
+      </div>
+    </header>
+
+    <div class="body shell">
+      <ul class="cards">
+        {tools.map((t) => (
+          <li>
+            <a href={t.href}>
+              <h2>{t.name}</h2>
+              <p>{t.blurb}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="sec">Why these six</h2>
+      <p>
+        Each one answers a question that comes up constantly and that a lab report doesn't address.
+        Reference ranges are printed in whatever unit the laboratory uses, derived values like HOMA-IR
+        and non-HDL are never calculated for you, and the difference between a range being
+        <em>normal</em> and a result being <em>adequate</em> is left entirely unexplained.
+      </p>
+      <p>
+        They also share a limitation worth stating plainly: a calculator answers a question about one
+        moment. Almost everything useful in blood work lives in the comparison across time — the same
+        marker, measured repeatedly, in a consistent unit. That is the part these tools can't do, and
+        it's why <a href="/blog/how-to-read-blood-test-results/">reading results properly</a> means
+        keeping them rather than converting them once and moving on.
+      </p>
+
+      <h2 class="sec">Guides that go deeper</h2>
+      <ul class="links">
+        <li><a href="/blog/how-to-read-blood-test-results/">How to read blood test results without a medical degree</a></li>
+        <li><a href="/tsh/">TSH levels by number — look up your exact result</a></li>
+        <li><a href="/blog/how-to-know-if-you-have-insulin-resistance/">How to know if you have insulin resistance</a></li>
+        <li><a href="/blog/cholesterol-numbers-explained/">What your cholesterol numbers actually mean</a></li>
+        <li><a href="/blog/ferritin-levels-chart/">Ferritin levels chart: normal vs optimal</a></li>
+        <li><a href="/blog/hba1c-explained/">HbA1c explained</a></li>
+      </ul>
+
+      <p class="disclaimer">
+        These tools are for education and aren't medical advice. Reference ranges vary between
+        laboratories — check the range printed on your own report, and discuss your results with a
+        qualified clinician.
+      </p>
+    </div>
+
+    <div class="cta shell">
+      <div class="cta-box">
+        <h3>Or stop doing the arithmetic yourself</h3>
+        <p>
+          Bevita reads your lab PDFs, extracts every value, computes the derived indices, and charts
+          each marker over time. Free to start, iOS.
+        </p>
+        <a href="https://apps.apple.com/us/app/bevita-blood-test-labs/id6783030563" class="badge">Download on the App Store</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .shell { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  .hub-head { padding: 120px 0 32px; }
+  .hub-head h1 { margin-bottom: 12px; }
+  .lede { font-size: 20px; color: var(--ink-2); max-width: 56ch; }
+  .body { padding-block: 16px 64px; }
+  .cards { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
+  .cards li { margin: 0; }
+  .cards a {
+    display: block; height: 100%; padding: 24px; border-radius: 16px;
+    background: var(--card); border: 1px solid var(--line); transition: border-color .2s, transform .2s;
+  }
+  .cards a:hover { border-color: var(--forest); transform: translateY(-2px); }
+  .cards h2 { font-size: 21px; margin-bottom: 8px; line-height: 1.2; }
+  .cards p { font-size: 15px; color: var(--ink-2); margin: 0; }
+  .sec { margin-top: 56px; margin-bottom: 12px; }
+  .body > p { max-width: 65ch; margin-bottom: 16px; }
+  .body a { color: var(--forest); font-weight: 500; }
+  .body a:hover { text-decoration: underline; }
+  .links { padding-left: 24px; }
+  .links li { margin-bottom: 8px; color: var(--ink-2); font-size: 17px; }
+  .disclaimer { font-style: italic; color: var(--ink-3); font-size: 15px; margin-top: 40px; }
+  .cta { padding-block: 0 96px; }
+  .cta-box {
+    background: var(--tinted); border: 1px solid var(--line); border-radius: 16px;
+    padding: 32px; text-align: center;
+  }
+  .cta-box h3 { margin-bottom: 8px; }
+  .cta-box p { margin: 0 auto 20px; color: var(--ink-2); font-size: 16px; max-width: 46ch; }
+  .badge {
+    display: inline-block; padding: 10px 20px; border-radius: 10px;
+    background: var(--ink); color: var(--on-brand); font-size: 13px; font-weight: 500;
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const faq = [
+  {
+    q: 'How do you calculate non-HDL cholesterol?',
+    a: 'Subtract HDL cholesterol from total cholesterol. If your total is 210 mg/dL and HDL is 55, your non-HDL is 155 mg/dL. No extra blood test is needed — the two values are already on any standard lipid panel.',
+  },
+  {
+    q: 'What is a good non-HDL cholesterol level?',
+    a: 'Under about 130 mg/dL (3.4 mmol/L) is generally considered optimal for adults at average risk. Targets tighten with cardiovascular risk: the long-standing convention sets the non-HDL goal 30 mg/dL above the LDL goal, so a high-risk LDL target under 100 implies a non-HDL target under 130.',
+  },
+  {
+    q: 'Why is non-HDL cholesterol useful if I already know my LDL?',
+    a: 'Because it captures every artery-damaging particle rather than just LDL — VLDL, IDL, remnants and Lp(a) are all included. It is also more trustworthy when triglycerides are high, because most labs estimate LDL with the Friedewald equation, which becomes unreliable above roughly 200 mg/dL of triglycerides while non-HDL does not.',
+  },
+  {
+    q: 'Does non-HDL cholesterol require fasting?',
+    a: 'No. It is calculated from total and HDL cholesterol, neither of which needs a fasting sample to be interpretable. That is another practical advantage over calculated LDL, which depends on triglycerides and is therefore sensitive to a recent meal.',
+  },
+];
+
+const related = [
+  { href: '/blog/non-hdl-cholesterol/', text: 'Non-HDL cholesterol: the number nobody explains' },
+  { href: '/blog/cholesterol-numbers-explained/', text: 'What your cholesterol numbers actually mean' },
+  { href: '/blog/apob-explained/', text: 'ApoB: the cardiac marker nobody told you about' },
+  { href: '/tools/triglyceride-hdl-ratio-calculator/', text: 'Triglyceride-to-HDL ratio calculator' },
+];
+
+const refs = [
+  { text: 'National Cholesterol Education Program. ATP III Executive Summary. NHLBI.', href: 'https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf' },
+  { text: 'American College of Cardiology. ACC/AHA Clinical Guideline For Managing Dyslipidemia (2026).', href: 'https://www.acc.org/latest-in-cardiology/journal-scans/2026/03/13/15/20/acc-aha-release-new-clinical-guideline-for-managing-dyslipidemia' },
+  { text: 'Childhood Non-HDL Cholesterol and Adult Atherosclerotic Cardiovascular Events. Circulation.', href: 'https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.123.064296' },
+  { text: 'Non-HDL cholesterol as a predictor of cardiovascular disease mortality. PubMed.', href: 'https://pubmed.ncbi.nlm.nih.gov/11386890/' },
+];
+---
+
+<ToolPage
+  title="Non-HDL Cholesterol Calculator"
+  description="Work out non-HDL cholesterol from the lipid panel you already have, in mg/dL or mmol/L, and see it against the target for your cardiovascular risk level."
+  short="Non-HDL"
+  faq={faq}
+  related={related}
+  refs={refs}
+>
+  <div slot="calculator" class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="tc">Total cholesterol</label>
+        <input id="tc" type="number" step="any" inputmode="decimal" placeholder="e.g. 210" />
+      </div>
+      <div class="field">
+        <label for="hdl">HDL cholesterol</label>
+        <input id="hdl" type="number" step="any" inputmode="decimal" placeholder="e.g. 55" />
+      </div>
+      <div class="field">
+        <label for="unit">Unit</label>
+        <select id="unit">
+          <option value="mgdl">mg/dL</option>
+          <option value="mmol">mmol/L</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="risk">Your cardiovascular risk level</label>
+        <select id="risk">
+          <option value="160">Low — 0 or 1 risk factor</option>
+          <option value="130" selected>Average / moderate — 2 or more risk factors</option>
+          <option value="100">High — existing heart disease or equivalent</option>
+        </select>
+      </div>
+    </div>
+    <div class="out" id="out" role="status" aria-live="polite">
+      <span class="big" id="big">—</span>
+      <span class="note" id="note">Enter total and HDL cholesterol from the same panel.</span>
+    </div>
+    <p class="hint">Risk level is a judgement your clinician makes from age, blood pressure, smoking, diabetes and family history — the options here are a rough guide.</p>
+  </div>
+
+  <h2>One subtraction, and why it matters</h2>
+  <p>
+    <strong>Non-HDL cholesterol = total cholesterol − HDL cholesterol.</strong> That is the whole
+    calculation, and it requires nothing you don't already have.
+  </p>
+  <p>
+    What makes it worth doing is what it captures. HDL broadly moves cholesterol away from artery
+    walls; everything else in the total carries it toward them. Subtract HDL and you are left with the
+    sum of every atherogenic particle in one number — LDL, but also VLDL, IDL, remnant lipoproteins
+    and Lp(a). An <a href="/blog/ldl-vs-hdl-cholesterol/">LDL measurement</a> covers only the largest
+    of those categories.
+  </p>
+
+  <h2>Targets by risk level</h2>
+  <p>
+    The convention in longest use is simple: the non-HDL goal sits 30 mg/dL above the LDL goal.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Risk level</th><th>LDL-C goal</th><th>Non-HDL-C goal</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Low (0–1 risk factors)</td><td>&lt; 160 mg/dL</td><td>&lt; 190 mg/dL (4.9 mmol/L)</td></tr>
+      <tr><td>Moderate (2+ risk factors)</td><td>&lt; 130 mg/dL</td><td>&lt; 160 mg/dL (4.1 mmol/L)</td></tr>
+      <tr><td>High (CHD or equivalent)</td><td>&lt; 100 mg/dL</td><td>&lt; 130 mg/dL (3.4 mmol/L)</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The 2026 ACC/AHA dyslipidemia guideline brought explicit LDL-C <em>and</em> non-HDL-C treatment
+    goals back into use, with LDL-C targets of under 100 mg/dL at borderline or intermediate risk,
+    under 70 at high risk and under 55 for secondary prevention. Non-HDL moved from footnote to
+    co-target.
+  </p>
+
+  <h2>When non-HDL is the more trustworthy number</h2>
+  <p>
+    Most laboratories don't measure LDL directly — they estimate it with the Friedewald equation, which
+    subtracts an assumed VLDL contribution derived from triglycerides. When
+    <a href="/blog/triglycerides-explained/">triglycerides run high</a>, above roughly 200 and badly
+    above 400, that assumption breaks down and calculated LDL reads falsely low.
+  </p>
+  <p>
+    Non-HDL has no such weakness: two directly measured values and a minus sign. So a reassuring LDL
+    sitting next to high triglycerides is exactly the situation where this calculation earns its keep.
+  </p>
+  <p>
+    The same reasoning is why <a href="/blog/apob-explained/">ApoB</a> has gained ground — it counts
+    atherogenic particles directly. Non-HDL is the free approximation of that idea, already hiding in
+    the panel you have.
+  </p>
+</ToolPage>
+
+<script is:inline>
+  (function () {
+    const tc = document.getElementById('tc');
+    const hdl = document.getElementById('hdl');
+    const unit = document.getElementById('unit');
+    const risk = document.getElementById('risk');
+    const out = document.getElementById('out');
+    const big = document.getElementById('big');
+    const note = document.getElementById('note');
+    const CHOL = 38.67;
+
+    function run() {
+      out.classList.remove('ok', 'warn');
+      const t = parseFloat(tc.value);
+      const h = parseFloat(hdl.value);
+      if (!tc.value || !hdl.value || isNaN(t) || isNaN(h)) {
+        big.textContent = '—';
+        note.textContent = 'Enter total and HDL cholesterol from the same panel.';
+        return;
+      }
+      if (h >= t) {
+        big.textContent = '—';
+        note.textContent = 'HDL cannot be higher than total cholesterol — check the two values.';
+        out.classList.add('warn');
+        return;
+      }
+
+      const isMmol = unit.value === 'mmol';
+      const nonHdl = t - h;
+      // Targets are defined in mg/dL; convert for display when the user works in mmol/L.
+      const ldlGoal = parseFloat(risk.value);
+      const targetMgdl = ldlGoal + 30;
+      const target = isMmol ? targetMgdl / CHOL : targetMgdl;
+      const u = isMmol ? 'mmol/L' : 'mg/dL';
+      const dp = isMmol ? 2 : 0;
+
+      const under = nonHdl < target;
+      big.textContent = nonHdl.toFixed(dp) + ' ' + u;
+      note.textContent = 'Non-HDL = ' + t + ' − ' + h + ' = ' + nonHdl.toFixed(dp) + ' ' + u + '. ' +
+        'Target for your risk level: under ' + target.toFixed(dp) + ' ' + u + ' — ' +
+        (under ? 'you are below it.' : 'you are above it.');
+      out.classList.add(under ? 'ok' : 'warn');
+    }
+
+    [tc, hdl, unit, risk].forEach((el) => {
+      el.addEventListener('input', run);
+      el.addEventListener('change', run);
+    });
+
+    unit.addEventListener('change', function () {
+      const isMmol = unit.value === 'mmol';
+      tc.placeholder = isMmol ? 'e.g. 5.4' : 'e.g. 210';
+      hdl.placeholder = isMmol ? 'e.g. 1.4' : 'e.g. 55';
+    });
+  })();
+</script>
