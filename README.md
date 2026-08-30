@@ -1,43 +1,49 @@
-# Astro Starter Kit: Minimal
+# bevita-landing
 
-```sh
-npm create astro@latest -- --template minimal
+Маркетинговый сайт и SEO-машина Bevita. Живёт на **https://bevita.app** (Netlify, site `0ffe4760-8090-41ea-8f41-36c7cfe08fe7`).
+
+_Обновлено: 2026-08-30._
+
+## Стек
+
+Astro 6 + Vue 3 (островки) + `@astrojs/netlify` (SSR-адаптер) + `@astrojs/sitemap`.
+i18n: `en` (дефолт, без префикса) и `es`. Маскот — капибара на Lottie (`public/capybara.json`, спека в `../.agent/docs/kapi-mascot-spec.md`).
+
+```bash
+npm run dev      # локально
+npm run build    # сборка в dist/ (Netlify делает то же самое)
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Что на сайте (83 URL в сайтмапе)
 
-## 🚀 Project Structure
+| Слой | Кол-во | Где лежит | Зачем |
+|---|---|---|---|
+| Блог | 52 | `src/content/blog/` (EN, 51) + `src/content/blog-es/` (ES, 3) | информационные запросы → установка |
+| TSH-хаб | 16 | `src/pages/tsh/index.astro` + `[value].astro`, данные в `src/data/tsh-levels.ts` | программатик-слой: страница под каждое значение TSH |
+| Калькуляторы | 7 | `src/pages/tools/*` + `src/layouts/ToolPage.astro` | ferritin, HbA1c→глюкоза, HOMA-IR, мг/дл↔ммоль/л, non-HDL, триглицериды/HDL |
+| Лендинг + легал | 4 | `src/pages/index.astro`, `medical`, `privacy`, `terms` | конверсия и требования Apple |
+| ES-локаль | 4 | `src/pages/es/` | первая нативная локаль |
 
-Inside of your Astro project, you'll see the following folders and files:
+`public/llms.txt` — описание сайта для LLM-краулеров (GEO/AEO-слой, см. `GEO_STRATEGY.md`).
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Индексация
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`scripts/indexnow.py` — пинг IndexNow (Bing/Yandex). `scripts/google-index.py` — Google Indexing API.
+Запускать после выкатки новой пачки страниц.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Доки
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Док | Что внутри |
+|---|---|
+| `CONTENT_PLAN.md` | план на 100 постов (создан 21.07). **Сделано ~51.** |
+| `GEO_STRATEGY.md` | двойная воронка: классическое SEO + видимость в LLM-ответах |
+| `BLOG_PLAYBOOK.md` | формат поста, структура, правила перелинковки |
+| `KEYWORD_RESEARCH.md` | семантика |
+| `BACKLINKS_PACKAGE.md` | план по ссылкам |
+| `../_docs/growth/TOKPORTAL-SEO-PLAYBOOK.md` | разбор конкурента, откуда взята идея программатик-слоёв `/tsh/*` и `/tools/*` |
 
-## 🧞 Commands
+## Гочи
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `package.json` всё ещё называется `healer-landing-new` — историческое имя, на деплой не влияет.
+- Астро-конфиг жёстко задаёт `site: 'https://bevita.app'` — от него считаются canonical и сайтмап. Менять домен только тут.
+- В `CONTENT_PLAN.md` в шапке остался старый домен `healer.health` — актуальный `bevita.app`.

@@ -3,7 +3,8 @@
 **Created:** 2026-07-21
 **Cadence:** 3 posts/day → ~34 days (2026-07-22 → 2026-08-24)
 **Goal:** SEO organic acquisition. Each post ranks for an informational health query, then converts to an app download.
-**Site:** healer.health (blog at `/blog`)
+**Site:** bevita.app (blog at `/blog`) — _домен обновлён 30.08; в тексте ниже могли остаться старые упоминания._
+**Прогресс на 30.08.2026:** опубликован 51 пост EN + 3 ES.
 
 ---
 
